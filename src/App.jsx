@@ -579,7 +579,7 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
           Camera access is required. Your privacy is protected — no data leaves this device.
         </p>
         <p style={{ fontSize: '0.72rem', color: isDark ? '#3d3560' : '#b8b2c8', margin: 0 }}>
-          © 2026 SignSync. All rights reserved.
+          © 2026 SignSync. Jan Corporation. All rights reserved.
         </p>
       </footer>
     </motion.div>
