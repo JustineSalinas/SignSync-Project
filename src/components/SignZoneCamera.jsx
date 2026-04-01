@@ -9,8 +9,9 @@ export default function SignZoneCamera() {
   const [videoElement, setVideoElement] = useState(null);
   
   const [currentWord, setCurrentWord] = useState(""); 
-  const [wordStream, setWordStream] = useState([]); // Holds the locked-in words
-  const [isFinalizing, setIsFinalizing] = useState(false); // Triggers the backend send
+  const [wordStream, setWordStream] = useState([]); 
+  const [isFinalizing, setIsFinalizing] = useState(false);
+  const [finalSentence, setFinalSentence] = useState(""); // Holds the AI output
 
   useEffect(() => {
     if (videoRef.current) setVideoElement(videoRef.current);
@@ -18,28 +19,51 @@ export default function SignZoneCamera() {
 
   const { isDetecting, landmarks } = useMediaPipe(videoElement);
 
-  // --- HCI LATENCY BUFFERING LOGIC ---
+  // --- HCI LATENCY BUFFERING & API CALL ---
   useEffect(() => {
-    // If no word, or just transitioning, do nothing
     if (!currentWord || currentWord === "SIGNING...") return;
 
-    // Start the Dwell Timer (1.5 seconds to lock in a word)
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       if (currentWord === "FIST") {
-        // "FIST" acts as our "SEND" command
-        setIsFinalizing(true);
+        if (wordStream.length === 0) return; // Don't send empty requests
         
-        // Mocking the API delay for now (we will build the Python backend next)
-        setTimeout(() => {
+        setIsFinalizing(true);
+        setFinalSentence(""); // Clear previous sentence
+        
+        try {
+          // 1. Send the raw signs to Alexander's Python backend
+          const response = await fetch('http://localhost:8000/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ words: wordStream })
+          });
+          
+          if (!response.ok) throw new Error("Backend connection failed");
+          
+          const data = await response.json();
+          
+          if (data.status === 'success') {
+            const aiSentence = data.refined_sentence;
+            setFinalSentence(aiSentence);
+            
+            // 2. Trigger Web Speech API to read it aloud
+            const utterance = new SpeechSynthesisUtterance(aiSentence);
+            utterance.rate = 0.9; // Slightly slower for clarity
+            window.speechSynthesis.speak(utterance);
+          }
+        } catch (error) {
+          console.error("Translation Error:", error);
+          setFinalSentence("Error: Could not reach translation server.");
+        } finally {
+          // 3. Reset the UI for the next user
           setWordStream([]);
           setIsFinalizing(false);
           setCurrentWord("");
-        }, 3000);
+        }
 
       } else {
         // Lock in the recognized word
         setWordStream((prev) => {
-          // Prevent logging the same word twice in a row accidentally
           if (prev[prev.length - 1] !== currentWord) {
             return [...prev, currentWord];
           }
@@ -48,9 +72,8 @@ export default function SignZoneCamera() {
       }
     }, 1500); 
 
-    // If currentWord changes before 1.5s, the cleanup function cancels the timer!
     return () => clearTimeout(timer);
-  }, [currentWord]);
+  }, [currentWord, wordStream]);
 
   // --- DRAWING LOOP ---
   useEffect(() => {
@@ -95,7 +118,7 @@ export default function SignZoneCamera() {
     <div className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden bg-slate-900 shadow-2xl border-4 border-slate-800 flex flex-col">
       
       {/* Top Status Bar & Live Word Stream */}
-      <div className="absolute top-0 left-0 w-full p-4 z-20 flex flex-col gap-2 bg-gradient-to-b from-black/90 to-transparent">
+      <div className="absolute top-0 left-0 w-full p-6 z-20 flex flex-col gap-4 bg-gradient-to-b from-black/95 via-black/80 to-transparent">
         <div className="flex justify-between items-center">
           <h2 className="text-white font-semibold tracking-wide">SignSync Kiosk</h2>
           <div className="flex items-center gap-2">
@@ -107,7 +130,7 @@ export default function SignZoneCamera() {
         </div>
 
         {/* The Accumulated Sentence */}
-        <div className="min-h-[3rem] flex items-center gap-2 flex-wrap mt-2">
+        <div className="min-h-[3rem] flex items-center gap-2 flex-wrap">
           <AnimatePresence>
             {wordStream.map((word, index) => (
               <motion.span 
@@ -129,6 +152,20 @@ export default function SignZoneCamera() {
             </motion.span>
           )}
         </div>
+
+        {/* The Final Refined Output */}
+        <AnimatePresence>
+          {finalSentence && !isFinalizing && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="w-full bg-emerald-500/20 border border-emerald-500/50 p-4 rounded-xl backdrop-blur-sm"
+            >
+              <p className="text-emerald-100 text-2xl font-medium">"{finalSentence}"</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <video ref={videoRef} className="w-full h-auto object-cover transform -scale-x-100" playsInline muted></video>
@@ -146,10 +183,9 @@ export default function SignZoneCamera() {
             <div className="bg-black/80 backdrop-blur-md border border-white/20 px-8 py-3 rounded-t-2xl shadow-2xl">
               <p className="text-white text-3xl font-bold tracking-wider">{currentWord}</p>
             </div>
-            {/* The Framer Motion Progress Bar */}
             <div className="w-full h-2 bg-slate-800 rounded-b-2xl overflow-hidden">
               <motion.div 
-                key={currentWord} // Re-triggers animation when word changes
+                key={currentWord} 
                 initial={{ width: "0%" }}
                 animate={{ width: "100%" }}
                 transition={{ duration: 1.5, ease: "linear" }}
