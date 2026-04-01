@@ -1,90 +1,75 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Hand, Camera, Volume2, ArrowRight, Moon, SunMedium } from 'lucide-react';
+import {
+  Hand, Camera, Volume2, ArrowRight, Moon, Sun, Play, Check, Shield,
+  ArrowLeft, Code2, Wrench, Search, Star, Users, Linkedin, Github, Mail,
+} from 'lucide-react';
 import SignZoneCamera from './components/SignZoneCamera';
 
+/* ─── Google Fonts: inject DM Serif Display + Inter ─── */
+if (!document.getElementById('google-fonts-link')) {
+  const link = document.createElement('link');
+  link.id = 'google-fonts-link';
+  link.rel = 'stylesheet';
+  link.href =
+    'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap';
+  document.head.appendChild(link);
+}
+
+const SERIF = "'DM Serif Display', Georgia, 'Times New Roman', serif";
+const SANS = "'Inter', system-ui, -apple-system, sans-serif";
+
+/* ─── PAGES ─── */
+const PAGE_LANDING = 'landing';
+const PAGE_TEAM = 'team';
+const PAGE_CAMERA = 'camera';
+
 export default function App() {
-  const [hasStarted, setHasStarted] = useState(false);
+  const [page, setPage] = useState(PAGE_LANDING);
   const [isDark, setIsDark] = useState(false);
-  const toggleDark = () => setIsDark((prev) => !prev);
+  const toggleDark = () => setIsDark((p) => !p);
 
   return (
-    <div className={`min-h-screen font-sans transition-colors duration-300 ${isDark ? 'dark bg-purple-950 text-purple-50' : 'bg-slate-50 text-slate-900'}`}>
+    <div
+      style={{
+        minHeight: '100vh',
+        fontFamily: SANS,
+        transition: 'background 0.3s, color 0.3s',
+        background: isDark ? '#0a0a0f' : '#f6f4f0',
+        color: isDark ? '#e4e0f8' : '#1a1030',
+      }}
+    >
       <AnimatePresence mode="wait">
-        {!hasStarted ? (
-          // --- LANDING PAGE ---
-          <motion.div
+        {page === PAGE_LANDING && (
+          <LandingPage
             key="landing"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="min-h-screen flex flex-col items-center justify-center p-6 relative"
-          >
-            {/* Dark mode toggle — top right */}
-            <button
-              onClick={toggleDark}
-              className={`absolute top-6 right-6 p-2 rounded-full transition-colors ${isDark ? 'text-purple-300 hover:bg-purple-800' : 'text-slate-500 hover:bg-slate-200'}`}
-            >
-              {isDark ? <SunMedium size={20} /> : <Moon size={20} />}
-            </button>
+            isDark={isDark}
+            toggleDark={toggleDark}
+            onStart={() => setPage(PAGE_CAMERA)}
+            onTeam={() => setPage(PAGE_TEAM)}
+          />
+        )}
 
-            <div className="max-w-xl w-full flex flex-col items-center">
+        {page === PAGE_TEAM && (
+          <TeamPage
+            key="team"
+            isDark={isDark}
+            toggleDark={toggleDark}
+            onBack={() => setPage(PAGE_LANDING)}
+            onStart={() => setPage(PAGE_CAMERA)}
+          />
+        )}
 
-              {/* Header */}
-              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-sm ${isDark ? 'bg-purple-800 text-purple-300' : 'bg-purple-100 text-violet-700'}`}>
-                <Hand size={32} strokeWidth={2.5} />
-              </div>
-              <h1 className={`text-4xl font-bold tracking-tight mb-3 ${isDark ? 'text-purple-50' : 'text-slate-900'}`}>SignSync</h1>
-              <p className={`text-center mb-10 text-lg ${isDark ? 'text-purple-300' : 'text-slate-500'}`}>
-                AI-powered sign language translation for seamless communication.
-              </p>
-
-              {/* Instruction Cards */}
-              <div className="w-full space-y-4 mb-10">
-                <InstructionCard
-                  isDark={isDark}
-                  icon={<Camera className={isDark ? 'text-purple-400' : 'text-violet-700'} size={24} />}
-                  title="Camera Access"
-                  desc="We'll need your camera to see your hand signs. No video is stored or transmitted."
-                />
-                <InstructionCard
-                  isDark={isDark}
-                  icon={<Hand className={isDark ? 'text-purple-400' : 'text-violet-700'} size={24} />}
-                  title="Position Your Hands"
-                  desc="Stand about 2 feet from the screen. Keep your hands in the camera frame at chest height."
-                />
-                <InstructionCard
-                  isDark={isDark}
-                  icon={<Volume2 className={isDark ? 'text-purple-400' : 'text-violet-700'} size={24} />}
-                  title="Audio Translation"
-                  desc="Recognized signs will be spoken aloud so the service officer can understand you."
-                />
-              </div>
-
-              {/* CTA Button */}
-              <button
-                onClick={() => setHasStarted(true)}
-                className={`group relative flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg active:scale-95 w-full sm:w-auto ${isDark ? 'bg-violet-700 hover:bg-violet-600 text-white hover:shadow-violet-700/30' : 'bg-violet-700 hover:bg-violet-800 text-white hover:shadow-violet-500/30'}`}
-              >
-                Get Started
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-
-              <p className={`mt-6 text-sm text-center ${isDark ? 'text-purple-400' : 'text-slate-400'}`}>
-                Camera access is required. Your privacy is protected — no data leaves this device.
-              </p>
-            </div>
-          </motion.div>
-        ) : (
-          // --- MAIN DASHBOARD ---
+        {page === PAGE_CAMERA && (
           <motion.div
             key="dashboard"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="min-h-screen flex flex-col"
           >
             <SignZoneCamera
-              onExit={() => setHasStarted(false)}
+              onExit={() => setPage(PAGE_LANDING)}
               isDark={isDark}
               toggleDark={toggleDark}
             />
@@ -95,17 +80,1005 @@ export default function App() {
   );
 }
 
-// Reusable UI Component for Landing Page Cards
-function InstructionCard({ icon, title, desc, isDark }) {
+/* ══════════════════════════════════════════════════════════════
+   SHARED NAVBAR
+══════════════════════════════════════════════════════════════ */
+function Navbar({ isDark, toggleDark, onStart, onTeam, scrollToHow, onLogoClick }) {
   return (
-    <div className={`flex items-start p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow border ${isDark ? 'bg-purple-900 border-purple-800 hover:shadow-purple-900/50' : 'bg-white border-slate-200'}`}>
-      <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center mr-4 ${isDark ? 'bg-purple-800' : 'bg-purple-50'}`}>
+    <nav
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0.85rem 2.5rem',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        background: isDark ? 'rgba(10,10,15,0.85)' : 'rgba(246,244,240,0.85)',
+        borderBottom: isDark
+          ? '1px solid rgba(139,92,246,0.12)'
+          : '1px solid rgba(0,0,0,0.06)',
+      }}
+    >
+      {/* Logo */}
+      <div
+        style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', cursor: 'pointer' }}
+        onClick={onLogoClick}
+      >
+        <div
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: 10,
+            background: isDark
+              ? 'linear-gradient(135deg,#4c1d95,#6d28d9)'
+              : 'linear-gradient(135deg,#7c3aed,#6d28d9)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#fff',
+          }}
+        >
+          <Hand size={18} strokeWidth={2.2} />
+        </div>
+        <span
+          style={{
+            fontWeight: 700,
+            fontSize: '1.05rem',
+            letterSpacing: '-0.02em',
+            color: isDark ? '#f0ecff' : '#1a1030',
+          }}
+        >
+          SignSync
+        </span>
+      </div>
+
+      {/* Nav links */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+        {['How it works', 'Accessibility', 'For Organizations'].map((t) => (
+          <button
+            key={t}
+            onClick={
+              t === 'How it works'
+                ? scrollToHow
+                : t === 'For Organizations'
+                  ? onTeam
+                  : undefined
+            }
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '0.88rem',
+              fontWeight: 500,
+              color: isDark ? '#9d8ec8' : '#6b6080',
+              transition: 'color 0.2s',
+              fontFamily: SANS,
+            }}
+            onMouseEnter={(e) => (e.target.style.color = isDark ? '#c4b5fd' : '#7c3aed')}
+            onMouseLeave={(e) =>
+              (e.target.style.color = isDark ? '#9d8ec8' : '#6b6080')
+            }
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+
+      {/* Right: dark toggle + CTA */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <button
+          onClick={toggleDark}
+          aria-label="Toggle dark mode"
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: isDark ? 'rgba(139,92,246,0.12)' : 'rgba(0,0,0,0.04)',
+            border: 'none',
+            cursor: 'pointer',
+            color: isDark ? '#a78bfa' : '#6b6080',
+            transition: 'all 0.2s',
+          }}
+        >
+          {isDark ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
+        <button
+          onClick={onStart}
+          style={{
+            padding: '0.55rem 1.25rem',
+            borderRadius: '10px',
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            background: isDark ? '#7c3aed' : '#1a1030',
+            color: '#fff',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+            fontFamily: SANS,
+          }}
+        >
+          Get Started
+        </button>
+      </div>
+    </nav>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LANDING PAGE — full multi-section layout
+══════════════════════════════════════════════════════════════ */
+function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
+  const howItWorksRef = useRef(null);
+
+  const scrollToHow = () => {
+    howItWorksRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <motion.div
+      key="landing"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.45 }}
+      style={{ minHeight: '100vh', overflow: 'hidden' }}
+    >
+      <Navbar
+        isDark={isDark}
+        toggleDark={toggleDark}
+        onStart={onStart}
+        onTeam={onTeam}
+        scrollToHow={scrollToHow}
+        onLogoClick={() => {}}
+      />
+
+      {/* ═══════════════ HERO SECTION ═══════════════ */}
+      <section
+        style={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: 'calc(100vh - 60px)',
+          padding: '4rem 2rem 2rem',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Soft gradient blob behind hero */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '-15%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '120%',
+            height: '55%',
+            background: isDark
+              ? 'radial-gradient(ellipse at center, rgba(109,40,217,0.12) 0%, transparent 70%)'
+              : 'radial-gradient(ellipse at center, rgba(199,180,255,0.35) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            padding: '0.4rem 1.1rem',
+            borderRadius: '999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            background: isDark ? 'rgba(139,92,246,0.12)' : 'rgba(139,92,246,0.08)',
+            color: isDark ? '#a78bfa' : '#7c3aed',
+            border: isDark
+              ? '1px solid rgba(139,92,246,0.25)'
+              : '1px solid rgba(139,92,246,0.18)',
+            marginBottom: '2rem',
+          }}
+        >
+          <span style={{ fontSize: '0.6rem' }}>✦</span>
+          AI-Powered Sign Language
+        </motion.div>
+
+        {/* Headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          style={{
+            fontFamily: SERIF,
+            fontSize: 'clamp(2.6rem, 6vw, 4.5rem)',
+            fontWeight: 400,
+            lineHeight: 1.1,
+            textAlign: 'center',
+            maxWidth: 700,
+            marginBottom: '1.5rem',
+            color: isDark ? '#f0ecff' : '#1a1030',
+          }}
+        >
+          Bridging the
+          <br />
+          <span
+            style={{
+              fontStyle: 'italic',
+              color: '#7c3aed',
+              position: 'relative',
+              display: 'inline-block',
+            }}
+          >
+            gap
+            {/* Decorative underline */}
+            <svg
+              viewBox="0 0 120 12"
+              fill="none"
+              style={{
+                position: 'absolute',
+                bottom: '-4px',
+                left: '0',
+                width: '100%',
+                height: '12px',
+              }}
+            >
+              <path
+                d="M2 8 C30 2, 90 2, 118 8"
+                stroke="#f97316"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                fill="none"
+                opacity="0.7"
+              />
+            </svg>
+          </span>{' '}
+          in communication
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          style={{
+            fontSize: '1.05rem',
+            lineHeight: 1.65,
+            textAlign: 'center',
+            maxWidth: 520,
+            color: isDark ? '#7c6fa0' : '#7a7088',
+            marginBottom: '2.5rem',
+          }}
+        >
+          Real-time sign language translation that lets you speak fluently without words — designed
+          for service counters, hospitals, and everyday life.
+        </motion.p>
+
+        {/* Two CTA buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+          style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}
+        >
+          <motion.button
+            whileHover={{ scale: 1.04, boxShadow: '0 8px 32px rgba(109,40,217,0.4)' }}
+            whileTap={{ scale: 0.97 }}
+            onClick={onStart}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.85rem 2rem',
+              borderRadius: '14px',
+              fontWeight: 600,
+              fontSize: '0.95rem',
+              background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+              color: '#fff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 20px rgba(109,40,217,0.3)',
+              fontFamily: SANS,
+            }}
+          >
+            Start Signing
+            <ArrowRight size={17} />
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={scrollToHow}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.85rem 1.8rem',
+              borderRadius: '14px',
+              fontWeight: 600,
+              fontSize: '0.95rem',
+              background: 'transparent',
+              color: isDark ? '#c4b5fd' : '#1a1030',
+              border: isDark
+                ? '1.5px solid rgba(139,92,246,0.35)'
+                : '1.5px solid rgba(26,16,48,0.2)',
+              cursor: 'pointer',
+              fontFamily: SANS,
+            }}
+          >
+            <Play size={14} fill="currentColor" />
+            See a demo
+          </motion.button>
+        </motion.div>
+
+        {/* Trust badges */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            marginTop: '3rem',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          {[
+            'No video stored',
+            'Works offline',
+            'ADA compliant',
+            'All data stays on device',
+          ].map((text, i) => (
+            <span key={text} style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
+              {i > 0 && (
+                <span
+                  style={{
+                    width: 1,
+                    height: 16,
+                    background: isDark ? 'rgba(139,92,246,0.2)' : 'rgba(0,0,0,0.12)',
+                    margin: '0 0.75rem',
+                  }}
+                />
+              )}
+              <Check
+                size={14}
+                strokeWidth={2.5}
+                style={{ color: isDark ? '#34d399' : '#22c55e', marginRight: '0.35rem' }}
+              />
+              <span
+                style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 500,
+                  color: isDark ? '#7c6fa0' : '#8a8296',
+                }}
+              >
+                {text}
+              </span>
+            </span>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* ═══════════════ HOW IT WORKS ═══════════════ */}
+      <section
+        ref={howItWorksRef}
+        style={{
+          padding: '5rem 2rem 4rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <span
+          style={{
+            fontSize: '0.72rem',
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: '#7c3aed',
+            marginBottom: '1rem',
+          }}
+        >
+          How It Works
+        </span>
+        <h2
+          style={{
+            fontFamily: SERIF,
+            fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+            fontWeight: 400,
+            lineHeight: 1.15,
+            textAlign: 'center',
+            maxWidth: 520,
+            marginBottom: '3.5rem',
+            color: isDark ? '#f0ecff' : '#1a1030',
+          }}
+        >
+          Three steps to seamless understanding
+        </h2>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '1.25rem',
+            maxWidth: 900,
+            width: '100%',
+          }}
+        >
+          <StepCard isDark={isDark} step={1} icon={<Camera size={20} />} title="Camera Access" desc="We'll need your camera to see your hand signs. No video is ever stored or transmitted — everything is processed locally, in real time." featured={false} />
+          <StepCard isDark={isDark} step={2} icon={<Hand size={20} />} title="Position Your Hands" desc="Stand about 2 feet from the screen. Keep your hands at chest height for the most accurate recognition." featured={true} />
+          <StepCard isDark={isDark} step={3} icon={<Volume2 size={20} />} title="Audio Translation" desc="Recognized signs are spoken aloud so the service officer can understand you — naturally, instantly, and without any extra steps." featured={false} />
+        </div>
+      </section>
+
+      {/* ═══════════════ CTA BANNER ═══════════════ */}
+      <section style={{ padding: '2rem 2rem 4rem' }}>
+        <div
+          style={{
+            maxWidth: 900,
+            margin: '0 auto',
+            borderRadius: '24px',
+            background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 40%, #5b21b6 100%)',
+            padding: '3.5rem 3rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '2rem',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <div style={{ position: 'absolute', top: '-40%', right: '-10%', width: 300, height: 300, borderRadius: '50%', background: 'rgba(255,255,255,0.06)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', bottom: '-30%', left: '-5%', width: 200, height: 200, borderRadius: '50%', background: 'rgba(255,255,255,0.04)', pointerEvents: 'none' }} />
+          <div style={{ position: 'relative', zIndex: 2, maxWidth: 400 }}>
+            <h3 style={{ fontFamily: SERIF, fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', fontWeight: 400, lineHeight: 1.2, color: '#fff', marginBottom: '0.75rem' }}>
+              Ready to communicate without barriers?
+            </h3>
+            <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: 'rgba(255,255,255,0.7)', margin: 0 }}>
+              Join thousands already using SignSync across clinics, banks, and counters.
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: '0.75rem', position: 'relative', zIndex: 2, flexWrap: 'wrap' }}>
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} onClick={onStart}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.75rem 1.6rem', borderRadius: '12px', fontWeight: 600, fontSize: '0.9rem', background: 'rgba(255,255,255,0.15)', color: '#fff', border: '1.5px solid rgba(255,255,255,0.3)', cursor: 'pointer', backdropFilter: 'blur(8px)', fontFamily: SANS }}>
+              Get Started <ArrowRight size={16} />
+            </motion.button>
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} onClick={onTeam}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.75rem 1.6rem', borderRadius: '12px', fontWeight: 600, fontSize: '0.9rem', background: '#fff', color: '#6d28d9', border: 'none', cursor: 'pointer', fontFamily: SANS }}>
+              Learn more
+            </motion.button>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════ FOOTER ═══════════════ */}
+      <footer
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: '2rem 2rem 2.5rem',
+          gap: '0.5rem',
+          borderTop: isDark ? '1px solid rgba(139,92,246,0.1)' : '1px solid rgba(0,0,0,0.06)',
+        }}
+      >
+        <p style={{ fontSize: '0.78rem', color: isDark ? '#5a4d7a' : '#9d95b4', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+          <Shield size={13} style={{ opacity: 0.6 }} />
+          Camera access is required. Your privacy is protected — no data leaves this device.
+        </p>
+        <p style={{ fontSize: '0.72rem', color: isDark ? '#3d3560' : '#b8b2c8', margin: 0 }}>
+          © 2026 SignSync. All rights reserved.
+        </p>
+      </footer>
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TEAM PAGE — "For Organizations"
+══════════════════════════════════════════════════════════════ */
+const TEAM_MEMBERS = [
+  {
+    name: 'Adrian Justine Salinas',
+    role: 'Project Lead & Backend Engineer',
+    icon: <Code2 size={22} />,
+    color: '#7c3aed',
+    gradient: 'linear-gradient(135deg, #7c3aed, #4c1d95)',
+    description:
+      'Leads the technical vision of SignSync and architects the backend infrastructure — from the AI gesture pipeline to the real-time translation API.',
+    skills: ['Python', 'FastAPI', 'MediaPipe', 'System Design'],
+  },
+  {
+    name: 'Alexander Michael Tolosa',
+    role: 'Front End Developer',
+    icon: <Wrench size={22} />,
+    color: '#f97316',
+    gradient: 'linear-gradient(135deg, #f97316, #c2410c)',
+    description:
+      'Crafts the user-facing experience — building polished, accessible interfaces that make sign language translation feel effortless and intuitive.',
+    skills: ['React', 'Tailwind CSS', 'Framer Motion', 'UI/UX'],
+  },
+  {
+    name: 'Matthew Tabat',
+    role: 'Quality Assurance',
+    icon: <Search size={22} />,
+    color: '#06b6d4',
+    gradient: 'linear-gradient(135deg, #06b6d4, #0e7490)',
+    description:
+      'Ensures every interaction in SignSync is reliable and bug-free — from camera detection edge cases to translation accuracy across devices.',
+    skills: ['Manual Testing', 'Test Planning', 'Bug Tracking', 'UAT'],
+  },
+  {
+    name: 'Jan Louis Simundo',
+    role: 'Quality Assurance',
+    icon: <Shield size={22} />,
+    color: '#8b5cf6',
+    gradient: 'linear-gradient(135deg, #8b5cf6, #6d28d9)',
+    description:
+      'Validates accessibility compliance and performance standards — making sure SignSync meets ADA requirements and works smoothly for all users.',
+    skills: ['Accessibility Testing', 'Performance QA', 'Documentation', 'Regression'],
+  },
+];
+
+function TeamPage({ isDark, toggleDark, onBack, onStart }) {
+  return (
+    <motion.div
+      key="team"
+      initial={{ opacity: 0, x: 40 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -40 }}
+      transition={{ duration: 0.4 }}
+      style={{ minHeight: '100vh' }}
+    >
+      <Navbar
+        isDark={isDark}
+        toggleDark={toggleDark}
+        onStart={onStart}
+        onTeam={() => {}}
+        scrollToHow={onBack}
+        onLogoClick={onBack}
+      />
+
+      {/* ═══════════ HERO ═══════════ */}
+      <section
+        style={{
+          position: 'relative',
+          padding: '5rem 2rem 3rem',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Background gradient */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '-20%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '140%',
+            height: '70%',
+            background: isDark
+              ? 'radial-gradient(ellipse at center, rgba(109,40,217,0.15) 0%, transparent 65%)'
+              : 'radial-gradient(ellipse at center, rgba(199,180,255,0.4) 0%, transparent 65%)',
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* Back button */}
+        <motion.button
+          whileHover={{ x: -3 }}
+          onClick={onBack}
+          style={{
+            position: 'absolute',
+            top: '2rem',
+            left: '2.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '0.85rem',
+            fontWeight: 500,
+            color: isDark ? '#9d8ec8' : '#7a7088',
+            fontFamily: SANS,
+            transition: 'color 0.2s',
+          }}
+        >
+          <ArrowLeft size={16} />
+          Back
+        </motion.button>
+
+        {/* Section badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            padding: '0.4rem 1.1rem',
+            borderRadius: '999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            background: isDark ? 'rgba(139,92,246,0.12)' : 'rgba(139,92,246,0.08)',
+            color: isDark ? '#a78bfa' : '#7c3aed',
+            border: isDark
+              ? '1px solid rgba(139,92,246,0.25)'
+              : '1px solid rgba(139,92,246,0.18)',
+            marginBottom: '1.5rem',
+          }}
+        >
+          <Users size={12} />
+          Meet the Team
+        </motion.div>
+
+        {/* Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          style={{
+            fontFamily: SERIF,
+            fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+            fontWeight: 400,
+            lineHeight: 1.1,
+            textAlign: 'center',
+            maxWidth: 650,
+            marginBottom: '1.25rem',
+            color: isDark ? '#f0ecff' : '#1a1030',
+          }}
+        >
+          The people behind{' '}
+          <span style={{ fontStyle: 'italic', color: '#7c3aed' }}>SignSync</span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          style={{
+            fontSize: '1.05rem',
+            lineHeight: 1.65,
+            textAlign: 'center',
+            maxWidth: 520,
+            color: isDark ? '#7c6fa0' : '#7a7088',
+            marginBottom: '1rem',
+          }}
+        >
+          A dedicated team building accessible technology — one sign at a time.
+        </motion.p>
+      </section>
+
+      {/* ═══════════ TEAM GRID ═══════════ */}
+      <section
+        style={{
+          padding: '0 2rem 5rem',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '1.5rem',
+            maxWidth: 900,
+            width: '100%',
+          }}
+        >
+          {TEAM_MEMBERS.map((member, i) => (
+            <TeamCard key={member.name} member={member} isDark={isDark} index={i} />
+          ))}
+        </div>
+      </section>
+
+      {/* ═══════════ FOOTER ═══════════ */}
+      <footer
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: '2rem 2rem 2.5rem',
+          gap: '0.5rem',
+          borderTop: isDark ? '1px solid rgba(139,92,246,0.1)' : '1px solid rgba(0,0,0,0.06)',
+        }}
+      >
+        <p style={{ fontSize: '0.78rem', color: isDark ? '#5a4d7a' : '#9d95b4', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+          <Shield size={13} style={{ opacity: 0.6 }} />
+          Camera access is required. Your privacy is protected — no data leaves this device.
+        </p>
+        <p style={{ fontSize: '0.72rem', color: isDark ? '#3d3560' : '#b8b2c8', margin: 0 }}>
+          © 2026 SignSync. All rights reserved.
+        </p>
+      </footer>
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TEAM CARD
+══════════════════════════════════════════════════════════════ */
+function TeamCard({ member, isDark, index }) {
+  const { name, role, icon, color, gradient, description, skills } = member;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.15 + index * 0.1, duration: 0.45 }}
+      whileHover={{
+        y: -6,
+        boxShadow: isDark
+          ? `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(139,92,246,0.2)`
+          : `0 20px 60px rgba(0,0,0,0.08), 0 0 0 1px rgba(139,92,246,0.12)`,
+      }}
+      style={{
+        position: 'relative',
+        borderRadius: '24px',
+        padding: '2rem',
+        background: isDark ? '#0f0a1e' : '#fff',
+        border: isDark ? '1px solid rgba(139,92,246,0.12)' : '1px solid rgba(0,0,0,0.06)',
+        boxShadow: isDark
+          ? '0 4px 24px rgba(0,0,0,0.4)'
+          : '0 4px 24px rgba(0,0,0,0.04)',
+        overflow: 'hidden',
+        cursor: 'default',
+        transition: 'box-shadow 0.3s',
+      }}
+    >
+      {/* Background decorative initial */}
+      <span
+        style={{
+          position: 'absolute',
+          top: '-0.5rem',
+          right: '0.75rem',
+          fontFamily: SERIF,
+          fontSize: '8rem',
+          fontWeight: 400,
+          lineHeight: 1,
+          color: isDark
+            ? 'rgba(139,92,246,0.04)'
+            : 'rgba(0,0,0,0.025)',
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      >
+        {name.charAt(0)}
+      </span>
+
+      {/* Top row: icon + role badge */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', position: 'relative', zIndex: 2 }}>
+        {/* Icon */}
+        <div
+          style={{
+            width: 52,
+            height: 52,
+            borderRadius: 16,
+            background: gradient,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#fff',
+            boxShadow: `0 4px 16px ${color}40`,
+          }}
+        >
+          {icon}
+        </div>
+
+        {/* Role badge */}
+        <div
+          style={{
+            padding: '0.3rem 0.85rem',
+            borderRadius: '999px',
+            fontSize: '0.68rem',
+            fontWeight: 600,
+            letterSpacing: '0.03em',
+            textTransform: 'uppercase',
+            background: isDark ? `${color}18` : `${color}12`,
+            color: color,
+            border: `1px solid ${color}30`,
+          }}
+        >
+          {role}
+        </div>
+      </div>
+
+      {/* Name */}
+      <h3
+        style={{
+          fontFamily: SERIF,
+          fontSize: '1.55rem',
+          fontWeight: 400,
+          lineHeight: 1.2,
+          marginBottom: '0.65rem',
+          color: isDark ? '#f0ecff' : '#1a1030',
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
+        {name}
+      </h3>
+
+      {/* Description */}
+      <p
+        style={{
+          fontSize: '0.88rem',
+          lineHeight: 1.65,
+          color: isDark ? '#7c6fa0' : '#7a7088',
+          marginBottom: '1.25rem',
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
+        {description}
+      </p>
+
+      {/* Skills pills */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', position: 'relative', zIndex: 2 }}>
+        {skills.map((skill) => (
+          <span
+            key={skill}
+            style={{
+              padding: '0.25rem 0.7rem',
+              borderRadius: '8px',
+              fontSize: '0.72rem',
+              fontWeight: 600,
+              background: isDark ? 'rgba(139,92,246,0.1)' : 'rgba(0,0,0,0.04)',
+              color: isDark ? '#a78bfa' : '#6b6080',
+              border: isDark ? '1px solid rgba(139,92,246,0.15)' : '1px solid rgba(0,0,0,0.06)',
+            }}
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
+
+      {/* Bottom accent line */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: '2rem',
+          right: '2rem',
+          height: 3,
+          borderRadius: '3px 3px 0 0',
+          background: gradient,
+          opacity: 0.6,
+        }}
+      />
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STEP CARD — numbered card for "How It Works" section
+══════════════════════════════════════════════════════════════ */
+function StepCard({ icon, title, desc, isDark, featured, step }) {
+  const lightBg = featured ? '#1a1030' : isDark ? '#141020' : '#fff';
+  const darkBg = featured ? '#1a1030' : '#0f0a1e';
+  const bg = isDark ? darkBg : lightBg;
+  const textColor = featured || isDark ? '#fff' : '#1a1030';
+  const descColor = featured
+    ? 'rgba(255,255,255,0.7)'
+    : isDark
+      ? '#7c6fa0'
+      : '#7a7088';
+
+  return (
+    <motion.div
+      whileHover={{
+        y: -4,
+        boxShadow: featured
+          ? '0 16px 48px rgba(109,40,217,0.35)'
+          : isDark
+            ? '0 12px 36px rgba(0,0,0,0.5)'
+            : '0 12px 36px rgba(0,0,0,0.08)',
+      }}
+      transition={{ duration: 0.25 }}
+      style={{
+        position: 'relative',
+        borderRadius: '20px',
+        padding: '1.75rem 1.5rem 1.5rem',
+        background: bg,
+        border: featured
+          ? 'none'
+          : isDark
+            ? '1px solid rgba(139,92,246,0.15)'
+            : '1px solid rgba(0,0,0,0.08)',
+        boxShadow: featured
+          ? '0 8px 32px rgba(109,40,217,0.25)'
+          : isDark
+            ? '0 2px 12px rgba(0,0,0,0.3)'
+            : '0 2px 12px rgba(0,0,0,0.04)',
+        overflow: 'hidden',
+        cursor: 'default',
+      }}
+    >
+      <span
+        style={{
+          position: 'absolute',
+          top: '0.6rem',
+          right: '1rem',
+          fontFamily: SERIF,
+          fontSize: '5rem',
+          fontWeight: 400,
+          lineHeight: 1,
+          color: featured
+            ? 'rgba(255,255,255,0.06)'
+            : isDark
+              ? 'rgba(139,92,246,0.08)'
+              : 'rgba(0,0,0,0.04)',
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
+      >
+        {step}
+      </span>
+      <div
+        style={{
+          width: 44,
+          height: 44,
+          borderRadius: 13,
+          background: featured
+            ? 'rgba(255,255,255,0.12)'
+            : isDark
+              ? 'rgba(109,40,217,0.18)'
+              : 'rgba(139,92,246,0.08)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: featured ? '#fff' : isDark ? '#a78bfa' : '#7c3aed',
+          marginBottom: '1.25rem',
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
         {icon}
       </div>
-      <div>
-        <h3 className={`font-semibold text-lg ${isDark ? 'text-purple-100' : 'text-slate-900'}`}>{title}</h3>
-        <p className={`mt-1 leading-relaxed ${isDark ? 'text-purple-300' : 'text-slate-500'}`}>{desc}</p>
-      </div>
-    </div>
+      <h3
+        style={{
+          fontWeight: 700,
+          fontSize: '1rem',
+          marginBottom: '0.5rem',
+          color: textColor,
+          letterSpacing: '-0.01em',
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
+        {title}
+      </h3>
+      <p
+        style={{
+          fontSize: '0.85rem',
+          lineHeight: 1.6,
+          color: descColor,
+          margin: 0,
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
+        {desc}
+      </p>
+    </motion.div>
   );
 }

@@ -111,21 +111,21 @@ export default function SignZoneCamera({ onExit, isDark, toggleDark }) {
   };
 
   return (
-    <div className={`flex flex-col h-screen transition-colors duration-300 ${isDark ? 'bg-purple-950' : 'bg-slate-50'}`}>
+    <div className={`flex flex-col h-screen transition-colors duration-300`} style={{ background: isDark ? '#0a0a0f' : '#f8f7ff', color: isDark ? '#e4e0f8' : '#1a1030' }}>
       {/* Top Navbar */}
-      <header className={`h-16 flex items-center justify-between px-6 shrink-0 shadow-sm z-20 border-b ${isDark ? 'bg-purple-900 border-purple-800' : 'bg-white border-slate-200'}`}>
+      <header className={`h-16 flex items-center justify-between px-6 shrink-0 shadow-sm z-20 border-b`} style={{ background: isDark ? '#0f0a1e' : '#ffffff', borderColor: isDark ? 'rgba(139,92,246,0.2)' : '#e2e8f0' }}>
         <div className="flex items-center gap-2 cursor-pointer" onClick={onExit}>
-          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isDark ? 'bg-purple-800 text-purple-300' : 'bg-purple-100 text-violet-700'}`}>
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center`} style={{ background: isDark ? 'rgba(109,40,217,0.25)' : '#ede9fe', color: isDark ? '#a78bfa' : '#7c3aed' }}>
             <CameraIcon size={18} />
           </div>
-          <h1 className={`font-bold text-xl tracking-tight ${isDark ? 'text-purple-50' : 'text-slate-900'}`}>SignSync</h1>
-          <span className={`text-sm font-medium hidden sm:inline-block ml-2 border-l pl-3 ${isDark ? 'text-purple-400 border-purple-700' : 'text-slate-400 border-slate-300'}`}>
+          <h1 className={`font-bold text-xl tracking-tight`} style={{ color: isDark ? '#f3f0ff' : '#1a1030' }}>SignSync</h1>
+          <span className={`text-sm font-medium hidden sm:inline-block ml-2 border-l pl-3`} style={{ color: isDark ? '#7c6fa0' : '#94a3b8', borderColor: isDark ? 'rgba(139,92,246,0.25)' : '#cbd5e1' }}>
             AI Sign Language Translator
           </span>
         </div>
         <button
           onClick={toggleDark}
-          className={`p-2 rounded-full transition-colors ${isDark ? 'text-purple-300 hover:bg-purple-800' : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'}`}
+          className={`p-2 rounded-full transition-colors`} style={{ color: isDark ? '#a78bfa' : '#94a3b8' }}
         >
           {isDark ? <SunMedium size={20} /> : <Moon size={20} />}
         </button>
@@ -161,22 +161,22 @@ export default function SignZoneCamera({ onExit, isDark, toggleDark }) {
         </div>
 
         {/* RIGHT COLUMN: Translation Panel */}
-        <div className={`flex flex-col rounded-2xl shadow-lg border overflow-hidden h-full transition-colors duration-300 ${isDark ? 'bg-purple-900 border-purple-800' : 'bg-white border-slate-200'}`}>
+        <div className={`flex flex-col rounded-2xl shadow-lg overflow-hidden h-full transition-colors duration-300`} style={{ background: isDark ? '#0f0a1e' : '#ffffff', border: isDark ? '1px solid rgba(139,92,246,0.2)' : '1px solid #e2e8f0' }}>
 
           {/* Panel Header */}
-          <div className={`p-4 border-b flex items-center justify-between shrink-0 ${isDark ? 'border-purple-800' : 'border-slate-100'}`}>
-            <h2 className={`font-semibold text-lg ${isDark ? 'text-purple-100' : 'text-slate-800'}`}>Translation</h2>
+          <div className={`p-4 border-b flex items-center justify-between shrink-0`} style={{ borderColor: isDark ? 'rgba(139,92,246,0.18)' : '#f1f5f9' }}>
+            <h2 className={`font-semibold text-lg`} style={{ color: isDark ? '#e9e3ff' : '#1e293b' }}>Translation</h2>
             <div className="flex gap-2">
               <button
                 onClick={repeatAudio}
                 disabled={!finalSentence}
-                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${isDark ? 'text-purple-300 hover:bg-purple-800 hover:text-purple-100' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
+                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed`} style={{ color: isDark ? '#a78bfa' : '#475569' }}
               >
                 <Repeat size={16} /> Repeat
               </button>
               <button
                 onClick={clearTranslation}
-                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${isDark ? 'text-purple-300 hover:bg-red-900/40 hover:text-red-300' : 'text-slate-600 hover:bg-red-50 hover:text-red-600'}`}
+                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors`} style={{ color: isDark ? '#a78bfa' : '#475569' }}
               >
                 <RotateCcw size={16} /> Clear
               </button>
@@ -184,17 +184,17 @@ export default function SignZoneCamera({ onExit, isDark, toggleDark }) {
           </div>
 
           {/* Main Translation Display Area */}
-          <div className={`flex-1 p-8 flex flex-col items-center justify-center relative overflow-y-auto ${isDark ? 'bg-purple-950/50' : 'bg-slate-50/50'}`}>
+          <div className={`flex-1 p-8 flex flex-col items-center justify-center relative overflow-y-auto`} style={{ background: isDark ? 'rgba(5,2,15,0.6)' : 'rgba(248,247,255,0.5)' }}>
             <AnimatePresence mode="wait">
               {/* State 1: Empty / Waiting */}
               {wordStream.length === 0 && !finalSentence && !isFinalizing && (
                 <motion.div
                   key="empty"
                   initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
-                  className={`flex flex-col items-center text-center ${isDark ? 'text-purple-400' : 'text-slate-400'}`}
+                  className={`flex flex-col items-center text-center`} style={{ color: isDark ? '#7c6fa0' : '#94a3b8' }}
                 >
                   <Hand size={48} className="mb-4 opacity-50" />
-                  <h3 className={`text-xl font-medium mb-1 ${isDark ? 'text-purple-300' : 'text-slate-600'}`}>Show a sign to begin</h3>
+                  <h3 className={`text-xl font-medium mb-1`} style={{ color: isDark ? '#9d8ec8' : '#64748b' }}>Show a sign to begin</h3>
                   <p>Hold your hand steady in the camera</p>
                 </motion.div>
               )}
@@ -204,7 +204,7 @@ export default function SignZoneCamera({ onExit, isDark, toggleDark }) {
                 <motion.div key="streaming" className="w-full flex flex-col items-start justify-end h-full">
                   <div className="flex flex-wrap gap-2 mb-4">
                     {wordStream.map((word, index) => (
-                      <span key={index} className={`px-4 py-2 rounded-xl text-xl font-medium ${isDark ? 'bg-purple-800 text-purple-200' : 'bg-purple-100 text-violet-700'}`}>
+                      <span key={index} className={`px-4 py-2 rounded-xl text-xl font-medium`} style={{ background: isDark ? 'rgba(109,40,217,0.3)' : '#ede9fe', color: isDark ? '#c4b5fd' : '#7c3aed' }}>
                         {word}
                       </span>
                     ))}
@@ -215,8 +215,8 @@ export default function SignZoneCamera({ onExit, isDark, toggleDark }) {
               {/* State 3: AI Finalizing */}
               {isFinalizing && (
                 <motion.div key="finalizing" className="flex flex-col items-center">
-                  <div className={`w-8 h-8 border-4 rounded-full animate-spin mb-4 ${isDark ? 'border-purple-700 border-t-purple-300' : 'border-purple-200 border-t-violet-600'}`}></div>
-                  <p className={`font-medium animate-pulse ${isDark ? 'text-purple-300' : 'text-violet-600'}`}>Processing with AI...</p>
+                  <div className={`w-8 h-8 border-4 rounded-full animate-spin mb-4`} style={{ borderColor: isDark ? 'rgba(109,40,217,0.3)' : '#ddd6fe', borderTopColor: isDark ? '#a78bfa' : '#7c3aed' }}></div>
+                  <p className={`font-medium animate-pulse`} style={{ color: isDark ? '#a78bfa' : '#7c3aed' }}>Processing with AI...</p>
                 </motion.div>
               )}
 
@@ -227,7 +227,7 @@ export default function SignZoneCamera({ onExit, isDark, toggleDark }) {
                   initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                   className="w-full h-full flex items-center justify-center text-center"
                 >
-                  <p className={`text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight ${isDark ? 'text-purple-50' : 'text-slate-800'}`}>
+                  <p className={`text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight`} style={{ color: isDark ? '#f0ecff' : '#1e293b' }}>
                     {finalSentence}
                   </p>
                 </motion.div>
@@ -236,13 +236,13 @@ export default function SignZoneCamera({ onExit, isDark, toggleDark }) {
           </div>
 
           {/* Dwell Timer Progress Bar (Footer) */}
-          <div className={`p-6 border-t shrink-0 ${isDark ? 'border-purple-800 bg-purple-900' : 'border-slate-100 bg-white'}`}>
+          <div className={`p-6 border-t shrink-0`} style={{ borderColor: isDark ? 'rgba(139,92,246,0.18)' : '#f1f5f9', background: isDark ? '#0f0a1e' : '#ffffff' }}>
             <div className="flex justify-between items-center mb-2">
-              <span className={`text-sm font-medium ${isDark ? 'text-purple-400' : 'text-slate-500'}`}>
+              <span className={`text-sm font-medium`} style={{ color: isDark ? '#7c6fa0' : '#64748b' }}>
                 {currentWord && currentWord !== "SIGNING..." ? `Detecting: ${currentWord}` : "Detecting..."}
               </span>
             </div>
-            <div className={`w-full h-2 rounded-full overflow-hidden ${isDark ? 'bg-purple-800' : 'bg-slate-100'}`}>
+            <div className={`w-full h-2 rounded-full overflow-hidden`} style={{ background: isDark ? 'rgba(109,40,217,0.2)' : '#f1f5f9' }}>
               <motion.div
                 key={currentWord}
                 initial={{ width: "0%" }}
