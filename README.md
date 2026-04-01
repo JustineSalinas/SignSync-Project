@@ -1,16 +1,72 @@
-# React + Vite
+# SignSync: AI-Enhanced HCI Solution for Public Service Kiosks
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Project Status](https://img.shields.io/badge/Status-Active_Development-emerald)
+![Tech Stack](https://img.shields.io/badge/Stack-React_%7C_FastAPI_%7C_MediaPipe-blue)
 
-Currently, two official plugins are available:
+## Project Meaning & Scope
+Modern public service kiosks often present a severe "Communication Asymmetry" for Deaf and hard-of-hearing individuals, as these interfaces rely almost exclusively on text-heavy navigation and audio cues. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**SignSync** addresses this barrier by transforming a standard kiosk webcam into an intelligent input device. Using real-time computer vision and Natural Language Processing (NLP), the system provides an autonomous, gesture-based interface that mirrors the natural flow of sign language. 
 
-## React Compiler
+The core focus is strictly on **Human-Computer Interaction (HCI)**. By utilizing visual "Feedforward" mechanics and Latency Buffering (Dwell Time), SignSync ensures the AI acts as a seamless, hidden participant, granting users the same level of autonomy and dignity as hearing individuals in government or healthcare settings.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Key Features
+* **"Camera-as-Input" Workflow:** Bypasses traditional touch-and-type interfaces in favor of real-time spatial tracking.
+* **Skeletal Visual Feedback:** Renders a real-time mesh over the user's hands to reduce anxiety and provide immediate confirmation that the system is "listening."
+* **Latency Buffering (Dwell Time):** Uses Framer Motion progress bars to require a 1.5-second "Hold Gesture" before locking in a word, preventing resting movements from causing accidental translations.
+* **AI Sentence Refinement:** Passes fragmented, heuristic-based raw words to a Python backend where OpenAI's GPT-4o model reconstructs them into polite, grammatically correct sentences.
+* **Text-to-Speech (TTS):** Automatically reads the refined sentence aloud via the Web Speech API for seamless interaction with human tellers or audio-based kiosk systems.
 
-## Expanding the ESLint configuration
+## Team & Responsibilities
+Developed by BSIT students at the University of San Agustin.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* **Adrian Justin J. Salinas (Project Lead & Core Vision Architect)**
+  * Oversees sprint timelines and core HCI alignment.
+  * Engineered the `useMediaPipe` browser integration and the `gestureRecognizer.js` heuristic math engine.
+* **Matthew Tabat (Frontend Developer & HCI Specialist)**
+  * Crafted the React UI and standard kiosk layout ergonomics.
+  * Implemented Framer Motion animations for the dwell timers and "Ghost Overlay" user positioning.
+* **Alexander Tolosa (Backend Engineer & NLP Architect)**
+  * Built the FastAPI Python server and managed CORS integration.
+  * Designed the OpenAI GPT-4o system prompt pipeline to translate raw fragments into professional English.
+* **Jan Louis Simundo (Hardware Integration & QA)**
+  * Manages physical kiosk constraints (1080p wide-angle camera, LED ring lighting).
+  * Coordinates field testing with target users and conducts system QA against environmental variables (e.g., visual noise in public lobbies).
+
+## Tech Stack
+**Frontend:**
+* React.js (Vite)
+* Tailwind CSS
+* Framer Motion (UI Animation & Feedback)
+* Google MediaPipe Holistic (via CDN for bypass optimization)
+* Web Speech API
+
+**Backend:**
+* Python 3
+* FastAPI & Uvicorn
+* Gemini API (Google AI Studio)
+
+## Architecture & Folder Structure
+```text
+signsync-kiosk/
+├── backend/                  # Python API for NLP Refinement
+│   ├── .env                  # OpenAI API Keys (Not committed to Git)
+│   ├── app.py                # FastAPI server and GPT-4o logic
+│   └── requirements.txt      # Python dependencies
+├── frontend/                 # React Application
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   └── SignZoneCamera.jsx    # Core UI, Dwell Timer, & API Fetch
+│   │   ├── hooks/
+│   │   │   └── useMediaPipe.js       # Global window injection of MediaPipe
+│   │   ├── utils/
+│   │   │   └── gestureRecognizer.js  # Heuristic 3D math engine
+│   │   ├── App.jsx
+│   │   ├── index.css                 # Tailwind directives
+│   │   └── main.jsx
+│   ├── index.html            # CDN Escape Hatch for MediaPipe scripts
+│   ├── package.json
+│   ├── tailwind.config.js
+│   └── vite.config.js        
+└── README.md
