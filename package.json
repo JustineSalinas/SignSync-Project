@@ -13,6 +13,7 @@
     "@mediapipe/camera_utils": "^0.3.1675466862",
     "@mediapipe/drawing_utils": "^0.3.1675466124",
     "@mediapipe/holistic": "^0.5.1675471629",
+    "@tailwindcss/postcss": "^4.2.2",
     "autoprefixer": "^10.4.27",
     "framer-motion": "^12.38.0",
     "postcss": "^8.5.8",
