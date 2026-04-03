@@ -107,21 +107,34 @@ function Navbar({ isDark, toggleDark, onStart, onTeam, scrollToHow, onLogoClick 
         style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', cursor: 'pointer' }}
         onClick={onLogoClick}
       >
-        <div
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: 10,
-            background: isDark
-              ? 'linear-gradient(135deg,#4c1d95,#6d28d9)'
-              : 'linear-gradient(135deg,#7c3aed,#6d28d9)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#fff',
-          }}
-        >
-          <Hand size={18} strokeWidth={2.2} />
+        <div style={{ position: 'relative', height: 36, display: 'flex', alignItems: 'center' }}>
+          <img 
+            src="/signsync.png" 
+            alt="SignSync Logo" 
+            style={{ 
+              height: '100%', 
+              width: 'auto', 
+              objectFit: 'contain', 
+              display: 'block',
+              visibility: 'hidden' // Used to dynamically set the container width based on aspect ratio
+            }} 
+          />
+          <div 
+            style={{ 
+              position: 'absolute', 
+              inset: 0, 
+              backgroundColor: isDark ? '#a78bfa' : '#7c3aed', 
+              maskImage: 'url(/signsync.png)', 
+              WebkitMaskImage: 'url(/signsync.png)', 
+              maskSize: 'contain', 
+              WebkitMaskSize: 'contain', 
+              maskRepeat: 'no-repeat', 
+              WebkitMaskRepeat: 'no-repeat',
+              maskPosition: 'center left',
+              WebkitMaskPosition: 'center left',
+              transition: 'background-color 0.3s'
+            }} 
+          />
         </div>
         <span
           style={{
@@ -776,7 +789,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
             marginBottom: '1rem',
           }}
         >
-          A dedicated team building accessible technology — one sign at a time.
+          A dedicated team based in Iloilo City, Philippines. Building accessible technology — one sign at a time.
         </motion.p>
       </section>
 
