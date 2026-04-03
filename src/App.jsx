@@ -6,17 +6,17 @@ import {
 } from 'lucide-react';
 import SignZoneCamera from './components/SignZoneCamera';
 
-/* ─── Google Fonts: inject DM Serif Display + Inter ─── */
+/* ─── Google Fonts: inject Playfair Display + Inter ─── */
 if (!document.getElementById('google-fonts-link')) {
   const link = document.createElement('link');
   link.id = 'google-fonts-link';
   link.rel = 'stylesheet';
   link.href =
-    'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap';
+    'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700;800&display=swap';
   document.head.appendChild(link);
 }
 
-const SERIF = "'DM Serif Display', Georgia, 'Times New Roman', serif";
+const SERIF = "'Playfair Display', Georgia, 'Times New Roman', serif";
 const SANS = "'Inter', system-ui, -apple-system, sans-serif";
 
 /* ─── PAGES ─── */
@@ -592,43 +592,51 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
 const TEAM_MEMBERS = [
   {
     name: 'Adrian Justine Salinas',
-    role: 'Project Lead & Backend Engineer',
-    icon: <Code2 size={22} />,
+    role: 'Project Lead & Backend',
+    icon: <Code2 size={16} />,
     color: '#7c3aed',
     gradient: 'linear-gradient(135deg, #7c3aed, #4c1d95)',
     description:
       'Leads the technical vision of SignSync and architects the backend infrastructure — from the AI gesture pipeline to the real-time translation API.',
     skills: ['Python', 'FastAPI', 'MediaPipe', 'System Design'],
+    image: 'https://api.dicebear.com/7.x/notionists/svg?seed=Adrian&backgroundColor=7c3aed',
+    quote: '"Building the bridge between AI and human connection."'
   },
   {
     name: 'Alexander Michael Tolosa',
     role: 'Front End Developer',
-    icon: <Wrench size={22} />,
+    icon: <Wrench size={16} />,
     color: '#f97316',
     gradient: 'linear-gradient(135deg, #f97316, #c2410c)',
     description:
       'Crafts the user-facing experience — building polished, accessible interfaces that make sign language translation feel effortless and intuitive.',
     skills: ['React', 'Tailwind CSS', 'Framer Motion', 'UI/UX'],
+    image: 'https://api.dicebear.com/7.x/notionists/svg?seed=Alexander&backgroundColor=f97316',
+    quote: '"Design is intelligence made visible."'
   },
   {
     name: 'Matthew Tabat',
     role: 'Quality Assurance',
-    icon: <Search size={22} />,
-    color: '#06b6d4',
-    gradient: 'linear-gradient(135deg, #06b6d4, #0e7490)',
+    icon: <Search size={16} />,
+    color: '#0d9488',
+    gradient: 'linear-gradient(135deg, #0d9488, #0f766e)',
     description:
       'Ensures every interaction in SignSync is reliable and bug-free — from camera detection edge cases to translation accuracy across devices.',
-    skills: ['Manual Testing', 'Test Planning', 'Bug Tracking', 'UAT'],
+    skills: ['Testing', 'Cypress', 'Edge Cases', 'Automation'],
+    image: 'https://api.dicebear.com/7.x/notionists/svg?seed=Matthew&backgroundColor=0d9488',
+    quote: '"Quality is not an act, it is a habit."'
   },
   {
     name: 'Jan Louis Simundo',
     role: 'Quality Assurance',
-    icon: <Shield size={22} />,
-    color: '#8b5cf6',
-    gradient: 'linear-gradient(135deg, #8b5cf6, #6d28d9)',
+    icon: <Shield size={16} />,
+    color: '#4f46e5',
+    gradient: 'linear-gradient(135deg, #4f46e5, #3730a3)',
     description:
       'Validates accessibility compliance and performance standards — making sure SignSync meets ADA requirements and works smoothly for all users.',
-    skills: ['Accessibility Testing', 'Performance QA', 'Documentation', 'Regression'],
+    skills: ['ADA Compliance', 'WCAG', 'Performance', 'A11y'],
+    image: 'https://api.dicebear.com/7.x/notionists/svg?seed=Jan&backgroundColor=4f46e5',
+    quote: '"Inclusion is the ultimate measure of success."'
   },
 ];
 
@@ -662,18 +670,18 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
           overflow: 'hidden',
         }}
       >
-        {/* Background gradient */}
+        {/* Subtle radial glow backend the hero */}
         <div
           style={{
             position: 'absolute',
-            top: '-20%',
+            top: '0%',
             left: '50%',
             transform: 'translateX(-50%)',
-            width: '140%',
-            height: '70%',
+            width: '120%',
+            height: '100%',
             background: isDark
-              ? 'radial-gradient(ellipse at center, rgba(109,40,217,0.15) 0%, transparent 65%)'
-              : 'radial-gradient(ellipse at center, rgba(199,180,255,0.4) 0%, transparent 65%)',
+              ? 'radial-gradient(ellipse at 50% 20%, rgba(139,92,246,0.12) 0%, transparent 60%)'
+              : 'radial-gradient(ellipse at 50% 20%, rgba(139,92,246,0.08) 0%, transparent 60%)',
             pointerEvents: 'none',
           }}
         />
@@ -726,7 +734,11 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
             marginBottom: '1.5rem',
           }}
         >
-          <Users size={12} />
+          <motion.div
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor' }}
+          />
           Meet the Team
         </motion.div>
 
@@ -818,18 +830,21 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
    TEAM CARD
 ══════════════════════════════════════════════════════════════ */
 function TeamCard({ member, isDark, index }) {
-  const { name, role, icon, color, gradient, description, skills } = member;
+  const { name, role, icon, color, gradient, description, skills, image, quote } = member;
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.15 + index * 0.1, duration: 0.45 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
       whileHover={{
         y: -6,
         boxShadow: isDark
-          ? `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(139,92,246,0.2)`
-          : `0 20px 60px rgba(0,0,0,0.08), 0 0 0 1px rgba(139,92,246,0.12)`,
+          ? `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1.5px ${color}50`
+          : `0 20px 60px rgba(0,0,0,0.08), 0 0 0 1.5px ${color}40`,
       }}
       style={{
         position: 'relative',
@@ -842,129 +857,130 @@ function TeamCard({ member, isDark, index }) {
           : '0 4px 24px rgba(0,0,0,0.04)',
         overflow: 'hidden',
         cursor: 'default',
-        transition: 'box-shadow 0.3s',
+        transition: 'box-shadow 0.3s, border-color 0.3s',
       }}
     >
-      {/* Background decorative initial */}
-      <span
-        style={{
-          position: 'absolute',
-          top: '-0.5rem',
-          right: '0.75rem',
-          fontFamily: SERIF,
-          fontSize: '8rem',
-          fontWeight: 400,
-          lineHeight: 1,
-          color: isDark
-            ? 'rgba(139,92,246,0.04)'
-            : 'rgba(0,0,0,0.025)',
-          pointerEvents: 'none',
-          userSelect: 'none',
-        }}
-      >
-        {name.charAt(0)}
-      </span>
-
-      {/* Top row: icon + role badge */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', position: 'relative', zIndex: 2 }}>
-        {/* Icon */}
-        <div
-          style={{
-            width: 52,
-            height: 52,
-            borderRadius: 16,
-            background: gradient,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#fff',
-            boxShadow: `0 4px 16px ${color}40`,
-          }}
-        >
-          {icon}
-        </div>
-
-        {/* Role badge */}
-        <div
-          style={{
-            padding: '0.3rem 0.85rem',
-            borderRadius: '999px',
-            fontSize: '0.68rem',
-            fontWeight: 600,
-            letterSpacing: '0.03em',
-            textTransform: 'uppercase',
-            background: isDark ? `${color}18` : `${color}12`,
-            color: color,
-            border: `1px solid ${color}30`,
-          }}
-        >
-          {role}
-        </div>
-      </div>
-
-      {/* Name */}
-      <h3
-        style={{
-          fontFamily: SERIF,
-          fontSize: '1.55rem',
-          fontWeight: 400,
-          lineHeight: 1.2,
-          marginBottom: '0.65rem',
-          color: isDark ? '#f0ecff' : '#1a1030',
-          position: 'relative',
-          zIndex: 2,
-        }}
-      >
-        {name}
-      </h3>
-
-      {/* Description */}
-      <p
-        style={{
-          fontSize: '0.88rem',
-          lineHeight: 1.65,
-          color: isDark ? '#7c6fa0' : '#7a7088',
-          marginBottom: '1.25rem',
-          position: 'relative',
-          zIndex: 2,
-        }}
-      >
-        {description}
-      </p>
-
-      {/* Skills pills */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', position: 'relative', zIndex: 2 }}>
-        {skills.map((skill) => (
-          <span
-            key={skill}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             style={{
-              padding: '0.25rem 0.7rem',
-              borderRadius: '8px',
-              fontSize: '0.72rem',
-              fontWeight: 600,
-              background: isDark ? 'rgba(139,92,246,0.1)' : 'rgba(0,0,0,0.04)',
-              color: isDark ? '#a78bfa' : '#6b6080',
-              border: isDark ? '1px solid rgba(139,92,246,0.15)' : '1px solid rgba(0,0,0,0.06)',
+              position: 'absolute',
+              inset: 0,
+              zIndex: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
             }}
           >
-            {skill}
-          </span>
-        ))}
-      </div>
+            {/* Background Image Layer */}
+            <div style={{ position: 'absolute', inset: 0, background: isDark ? '#1a1030' : '#f0ecff', backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: isDark ? 0.8 : 1 }} />
+            
+            {/* Gradient Overlay for Text Readability */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)' }} />
 
-      {/* Bottom accent line */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: '2rem',
-          right: '2rem',
-          height: 3,
-          borderRadius: '3px 3px 0 0',
-          background: gradient,
-          opacity: 0.6,
-        }}
-      />
+            {/* Hover Text Content */}
+            <div style={{ position: 'relative', zIndex: 11, padding: '2rem' }}>
+              <h3 style={{ fontFamily: SERIF, fontSize: '1.6rem', fontWeight: 600, color: '#f0ecff', marginBottom: '0.5rem', lineHeight: 1.1 }}>{name}</h3>
+              <p style={{ fontFamily: SERIF, fontSize: '1rem', fontStyle: 'italic', color: '#e2d8f0', margin: 0, opacity: 0.95 }}>{quote}</p>
+            </div>
+            
+            {/* Colored bottom glow line */}
+            <div style={{ position: 'absolute', bottom: 0, left: '2rem', right: '2rem', height: 4, borderRadius: '4px 4px 0 0', background: color, boxShadow: `0 -4px 12px ${color}60` }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div style={{ opacity: isHovered ? 0 : 1, transition: 'opacity 0.2s', position: 'relative', zIndex: 2 }}>
+        {/* Top row: Avatar + role badge */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+          {/* Avatar Area */}
+          <div
+            style={{
+              width: 54,
+              height: 54,
+              borderRadius: 16,
+              background: isDark ? `${color}15` : `${color}15`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
+            }}
+          >
+            <img src={image} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+
+          {/* Refined Role badge */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              padding: '0.35rem 0.9rem',
+              borderRadius: '999px',
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              background: isDark ? 'rgba(0,0,0,0.2)' : 'transparent',
+              color: color,
+              border: `1px solid ${color}40`,
+            }}
+          >
+            {icon}
+            {role}
+          </div>
+        </div>
+
+        {/* Name */}
+        <h3
+          style={{
+            fontFamily: SERIF,
+            fontSize: '1.65rem',
+            fontWeight: 600,
+            lineHeight: 1.15,
+            marginBottom: '0.65rem',
+            color: isDark ? '#f0ecff' : '#1a1030',
+          }}
+        >
+          {name}
+        </h3>
+
+        {/* Description */}
+        <p
+          style={{
+            fontSize: '0.9rem',
+            lineHeight: 1.65,
+            color: isDark ? '#9d8ec8' : '#6b6080',
+            marginBottom: '1.5rem',
+          }}
+        >
+          {description}
+        </p>
+
+        {/* Skills pills */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+          {skills.map((skill) => (
+            <span
+              key={skill}
+              style={{
+                padding: '0.3rem 0.8rem',
+                borderRadius: '8px',
+                fontSize: '0.72rem',
+                fontWeight: 500,
+                background: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
+                color: isDark ? '#a78bfa' : '#6b6080',
+                border: isDark ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(0,0,0,0.05)',
+              }}
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
     </motion.div>
   );
 }
