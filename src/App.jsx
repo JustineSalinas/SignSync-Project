@@ -579,7 +579,7 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
           Camera access is required. Your privacy is protected — no data leaves this device.
         </p>
         <p style={{ fontSize: '0.72rem', color: isDark ? '#3d3560' : '#b8b2c8', margin: 0 }}>
-          © 2026 SignSync. Jan Corporation. All rights reserved.
+          © 2026 SignSync. All rights reserved.
         </p>
       </footer>
     </motion.div>
@@ -591,7 +591,7 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
 ══════════════════════════════════════════════════════════════ */
 const TEAM_MEMBERS = [
   {
-    name: 'Adrian Justine Salinas',
+    name: 'Adrian Justin Salinas',
     role: 'Project Lead & Backend',
     icon: <Code2 size={16} />,
     color: '#7c3aed',
@@ -599,7 +599,7 @@ const TEAM_MEMBERS = [
     description:
       'Leads the technical vision of SignSync and architects the backend infrastructure — from the AI gesture pipeline to the real-time translation API.',
     skills: ['Python', 'FastAPI', 'MediaPipe', 'System Design'],
-    image: 'https://api.dicebear.com/7.x/notionists/svg?seed=Adrian&backgroundColor=7c3aed',
+    image: '/ajpic.jpg',
     quote: '"Building the bridge between AI and human connection."'
   },
   {
@@ -623,7 +623,7 @@ const TEAM_MEMBERS = [
     description:
       'Ensures every interaction in SignSync is reliable and bug-free — from camera detection edge cases to translation accuracy across devices.',
     skills: ['Testing', 'Cypress', 'Edge Cases', 'Automation'],
-    image: 'https://api.dicebear.com/7.x/notionists/svg?seed=Matthew&backgroundColor=0d9488',
+    image: '/matthewpic.jpg',
     quote: '"Quality is not an act, it is a habit."'
   },
   {
