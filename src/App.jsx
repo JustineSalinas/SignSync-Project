@@ -107,32 +107,18 @@ function Navbar({ isDark, toggleDark, onStart, onTeam, scrollToHow, onLogoClick 
         style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', cursor: 'pointer' }}
         onClick={onLogoClick}
       >
-        <div style={{ position: 'relative', height: 36, display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', height: 36 }}>
           <img 
             src="/signsync.png" 
             alt="SignSync Logo" 
             style={{ 
               height: '100%', 
               width: 'auto', 
-              objectFit: 'contain', 
-              display: 'block',
-              visibility: 'hidden' // Used to dynamically set the container width based on aspect ratio
-            }} 
-          />
-          <div 
-            style={{ 
-              position: 'absolute', 
-              inset: 0, 
-              backgroundColor: isDark ? '#a78bfa' : '#7c3aed', 
-              maskImage: 'url(/signsync.png)', 
-              WebkitMaskImage: 'url(/signsync.png)', 
-              maskSize: 'contain', 
-              WebkitMaskSize: 'contain', 
-              maskRepeat: 'no-repeat', 
-              WebkitMaskRepeat: 'no-repeat',
-              maskPosition: 'center left',
-              WebkitMaskPosition: 'center left',
-              transition: 'background-color 0.3s'
+              objectFit: 'contain',
+              // Use CSS filter to turn black/white into a prominent violet color (#7c3aed)
+              filter: isDark 
+                ? 'brightness(0) saturate(100%) invert(69%) sepia(18%) saturate(1142%) hue-rotate(218deg) brightness(101%) contrast(97%)' 
+                : 'brightness(0) saturate(100%) invert(26%) sepia(87%) saturate(5832%) hue-rotate(256deg) brightness(96%) contrast(92%)' 
             }} 
           />
         </div>
