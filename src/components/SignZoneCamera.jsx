@@ -32,7 +32,7 @@ export default function SignZoneCamera({ onExit, isDark, toggleDark }) {
         setIsFinalizing(true);
         setFinalSentence("");
         try {
-          const response = await fetch('http://localhost:8000/api/translate', {
+          const response = await fetch('/api/translate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ words: wordStream })
