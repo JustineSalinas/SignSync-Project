@@ -104,10 +104,10 @@ function Navbar({ isDark, toggleDark, onStart, onTeam, scrollToHow, onLogoClick 
     >
       {/* Logo */}
       <div
-        style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', cursor: 'pointer' }}
+        style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', cursor: 'pointer' }}
         onClick={onLogoClick}
       >
-        <div style={{ display: 'flex', alignItems: 'center', height: 36 }}>
+        <div style={{ display: 'flex', alignItems: 'center', height: 26 }}>
           <img 
             src="/signsync.png" 
             alt="SignSync Logo" 
@@ -125,8 +125,9 @@ function Navbar({ isDark, toggleDark, onStart, onTeam, scrollToHow, onLogoClick 
         <span
           style={{
             fontWeight: 700,
-            fontSize: '1.05rem',
+            fontSize: '1.1rem',
             letterSpacing: '-0.02em',
+            lineHeight: 1,
             color: isDark ? '#f0ecff' : '#1a1030',
           }}
         >
@@ -610,7 +611,7 @@ const TEAM_MEMBERS = [
     description:
       'Crafts the user-facing experience — building polished, accessible interfaces that make sign language translation feel effortless and intuitive.',
     skills: ['React', 'Tailwind CSS', 'Framer Motion', 'UI/UX'],
-    image: 'https://api.dicebear.com/7.x/notionists/svg?seed=Alexander&backgroundColor=f97316',
+    image: '/alexpic.png',
     quote: '"Design is intelligence made visible."'
   },
   {
@@ -634,7 +635,7 @@ const TEAM_MEMBERS = [
     description:
       'Validates accessibility compliance and performance standards — making sure SignSync meets ADA requirements and works smoothly for all users.',
     skills: ['ADA Compliance', 'WCAG', 'Performance', 'A11y'],
-    image: 'https://api.dicebear.com/7.x/notionists/svg?seed=Jan&backgroundColor=4f46e5',
+    image: '/janpic.png',
     quote: '"Inclusion is the ultimate measure of success."'
   },
 ];
