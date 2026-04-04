@@ -315,7 +315,9 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
           <span
             style={{
               fontStyle: 'italic',
-              color: '#7c3aed',
+              background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 30%, #7c3aed 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
               position: 'relative',
               display: 'inline-block',
             }}
@@ -383,7 +385,7 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
               borderRadius: '14px',
               fontWeight: 600,
               fontSize: '0.95rem',
-              background: 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+              background: 'linear-gradient(135deg, #d946ef, #7c3aed)',
               color: '#fff',
               border: 'none',
               cursor: 'pointer',
@@ -529,7 +531,7 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
             maxWidth: 900,
             margin: '0 auto',
             borderRadius: '24px',
-            background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 40%, #5b21b6 100%)',
+            background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 20%, #7c3aed 60%, #4c1d95 100%)',
             padding: '3.5rem 3rem',
             display: 'flex',
             alignItems: 'center',
@@ -759,7 +761,16 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
           }}
         >
           The people behind{' '}
-          <span style={{ fontStyle: 'italic', color: '#7c3aed' }}>SignSync</span>
+          <span 
+            style={{ 
+              fontStyle: 'italic', 
+              background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 30%, #7c3aed 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}
+          >
+            SignSync
+          </span>
         </motion.h1>
 
         {/* Subtitle */}
