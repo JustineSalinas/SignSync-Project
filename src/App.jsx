@@ -766,7 +766,7 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
         {/* Bottom Bar */}
         <div style={{ maxWidth: 1000, margin: '0 auto', paddingTop: '2rem', borderTop: isDark ? '1px solid rgba(139,92,246,0.1)' : '1px solid rgba(0,0,0,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <p style={{ fontSize: '0.75rem', color: isDark ? '#5a4d7a' : '#9ca3af', margin: 0 }}>
-            © 2026 SignSync. All rights reserved.
+            © 2026 SignSync, Philippines. All rights reserved.
           </p>
           <p style={{ fontSize: '0.75rem', color: isDark ? '#7a7088' : '#6b7280', display: 'flex', alignItems: 'center', gap: '0.4rem', margin: 0 }}>
             <Shield size={14} style={{ color: '#10b981' }} />
@@ -1157,7 +1157,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
           Camera access is required. Your privacy is protected — no data leaves this device.
         </p>
         <p style={{ fontSize: '0.72rem', color: isDark ? '#3d3560' : '#b8b2c8', margin: 0 }}>
-          © 2026 SignSync. All rights reserved.
+          © 2026 SignSync, Philippines. All rights reserved.
         </p>
       </footer>
     </motion.div>
