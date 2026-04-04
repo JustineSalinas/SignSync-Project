@@ -138,7 +138,7 @@ function Navbar({ isDark, toggleDark, onStart, onTeam, scrollToHow, onLogoClick 
 
       {/* Nav links */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-        {['How it works', 'Accessibility', 'For Organizations'].map((t) => (
+        {['How it works', 'For Organizations'].map((t) => (
           <button
             key={t}
             onClick={
