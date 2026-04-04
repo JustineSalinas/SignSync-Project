@@ -41,7 +41,7 @@ model = genai.GenerativeModel(
     system_instruction=system_instruction
 )
 
-@app.post("/api/translate")
+@app.post("/translate")
 async def translate_signs(request: TranslationRequest):
     if not request.words:
         raise HTTPException(status_code=400, detail="Word stream is empty.")

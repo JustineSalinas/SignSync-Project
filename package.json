@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"uvicorn api.index:app --reload --port 8000\" \"vite\"",
+    "dev": "concurrently \"backend\\venv\\Scripts\\uvicorn api.index:app --reload --port 8000\" \"vite\"",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
