@@ -501,9 +501,10 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.85rem 2rem',
-              borderRadius: '14px',
+              justifyContent: 'center',
+              gap: '0.65rem',
+              padding: '0.85rem 2.2rem',
+              borderRadius: '999px',
               fontWeight: 600,
               fontSize: '0.95rem',
               background: 'linear-gradient(135deg, #d946ef, #7c3aed)',
@@ -514,8 +515,8 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
               fontFamily: SANS,
             }}
           >
-            Start Signing
-            <ArrowRight size={17} />
+            Get Started
+            <ArrowRight size={18} strokeWidth={2.5} />
           </motion.button>
 
           <motion.button
@@ -525,9 +526,10 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.45rem',
-              padding: '0.85rem 1.8rem',
-              borderRadius: '14px',
+              justifyContent: 'center',
+              gap: '0.6rem',
+              padding: '0.85rem 2rem',
+              borderRadius: '999px',
               fontWeight: 600,
               fontSize: '0.95rem',
               background: 'transparent',
@@ -539,7 +541,7 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
               fontFamily: SANS,
             }}
           >
-            <Play size={14} fill="currentColor" />
+            <Play size={15} strokeWidth={2.5} fill="currentColor" />
             See a demo
           </motion.button>
         </motion.div>
@@ -697,8 +699,8 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: 160 }}>
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} onClick={onStart}
-              style={{ display: 'inline-flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', padding: '0.85rem 1.5rem', borderRadius: '999px', fontWeight: 600, fontSize: '0.95rem', background: 'linear-gradient(135deg, #d946ef, #7c3aed)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: SANS }}>
-              Get Started <ArrowRight size={16} />
+              style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', gap: '0.65rem', padding: '0.85rem 2rem', borderRadius: '999px', fontWeight: 600, fontSize: '0.95rem', background: 'linear-gradient(135deg, #d946ef, #7c3aed)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: SANS }}>
+              Get Started <ArrowRight size={18} strokeWidth={2.5} />
             </motion.button>
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} onClick={onTeam}
               style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', padding: '0.85rem 1.5rem', borderRadius: '999px', fontWeight: 600, fontSize: '0.95rem', background: 'transparent', color: isDark ? '#9d8ec8' : '#6b7280', border: isDark ? '1px solid rgba(139,92,246,0.2)' : '1px solid rgba(0,0,0,0.1)', cursor: 'pointer', fontFamily: SANS }}>
