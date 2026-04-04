@@ -440,6 +440,8 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
             maxWidth: 700,
             marginBottom: '1.5rem',
             color: isDark ? '#f0ecff' : '#1a1030',
+            overflow: 'visible',
+            paddingTop: '1.5rem',
           }}
         >
           Bridging the
@@ -448,11 +450,13 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
             style={{
               position: 'relative',
               display: 'inline-block',
+              padding: '0 1.2rem',
+              overflow: 'visible',
             }}
           >
-            <span style={{ position: 'absolute', top: -4, right: -4, opacity: 0.4, WebkitTextStroke: '1px #f472b6', color: 'transparent', fontStyle: 'italic', zIndex: -1 }}>gap</span>
-            <span style={{ position: 'absolute', top: -8, right: -8, opacity: 0.2, WebkitTextStroke: '1px #d946ef', color: 'transparent', fontStyle: 'italic', zIndex: -2 }}>gap</span>
-            <span style={{ position: 'absolute', top: -12, right: -12, opacity: 0.1, WebkitTextStroke: '1px #7c3aed', color: 'transparent', fontStyle: 'italic', zIndex: -3 }}>gap</span>
+            <span style={{ position: 'absolute', top: -5, right: -5, opacity: 0.5, WebkitTextStroke: isDark ? '1px rgba(244,114,182,0.4)' : '1px rgba(244,114,182,0.3)', color: 'transparent', fontStyle: 'italic', zIndex: -1, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
+            <span style={{ position: 'absolute', top: -10, right: -10, opacity: 0.3, WebkitTextStroke: isDark ? '1px rgba(217,70,239,0.3)' : '1px rgba(217,70,239,0.2)', color: 'transparent', fontStyle: 'italic', zIndex: -2, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
+            <span style={{ position: 'absolute', top: -15, right: -15, opacity: 0.15, WebkitTextStroke: isDark ? '1px rgba(124,58,237,0.2)' : '1px rgba(124,58,237,0.1)', color: 'transparent', fontStyle: 'italic', zIndex: -3, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
             <span
               style={{
                 fontStyle: 'italic',
