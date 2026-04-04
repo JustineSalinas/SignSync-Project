@@ -9,10 +9,6 @@ Modern public service kiosks often present a severe "Communication Asymmetry" fo
 
 **SignSync** addresses this barrier by transforming a standard kiosk webcam into an intelligent input device. Using real-time computer vision and Natural Language Processing (NLP), the system provides an autonomous, gesture-based interface that mirrors the natural flow of sign language.
 
-The core focus is strictly on **Human-Computer Interaction (HCI)**. By utilizing visual "Feedforward" mechanics and Latency Buffering (Dwell Time), SignSync ensures the AI acts as a seamless, hidden participant, granting users the same level of autonomy and dignity as hearing individuals in government or healthcare settings.
-
-## Key Features
-
 - **"Camera-as-Input" Workflow:** Bypasses traditional touch-and-type interfaces in favor of real-time spatial tracking.
 - **Skeletal Visual Feedback:** Renders a real-time mesh over the user's hands to reduce anxiety and provide immediate confirmation that the system is "listening."
 - **Latency Buffering (Dwell Time):** Uses Framer Motion progress bars to require a 1.5-second "Hold Gesture" before locking in a word, preventing resting movements from causing accidental translations.
