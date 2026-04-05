@@ -109,18 +109,18 @@ function Navbar({ isDark, toggleDark, onStart, onTeam, scrollToHow, onLogoClick 
         onClick={onLogoClick}
       >
         <div style={{ display: 'flex', alignItems: 'center', height: 26 }}>
-          <img 
-            src="/signsync.png" 
-            alt="SignSync Logo" 
-            style={{ 
-              height: '100%', 
-              width: 'auto', 
+          <img
+            src="/signsync.png"
+            alt="SignSync Logo"
+            style={{
+              height: '100%',
+              width: 'auto',
               objectFit: 'contain',
               // Use CSS filter to turn black/white into a prominent violet color (#7c3aed)
-              filter: isDark 
-                ? 'brightness(0) saturate(100%) invert(69%) sepia(18%) saturate(1142%) hue-rotate(218deg) brightness(101%) contrast(97%)' 
-                : 'brightness(0) saturate(100%) invert(26%) sepia(87%) saturate(5832%) hue-rotate(256deg) brightness(96%) contrast(92%)' 
-            }} 
+              filter: isDark
+                ? 'brightness(0) saturate(100%) invert(69%) sepia(18%) saturate(1142%) hue-rotate(218deg) brightness(101%) contrast(97%)'
+                : 'brightness(0) saturate(100%) invert(26%) sepia(87%) saturate(5832%) hue-rotate(256deg) brightness(96%) contrast(92%)'
+            }}
           />
         </div>
         <span
@@ -301,14 +301,14 @@ function DashboardMockup({ isDark }) {
         <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#f59e0b' }} />
         <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#10b981' }} />
       </div>
-      
+
       {/* Content Area */}
       <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
         {/* Camera placeholder */}
         <div style={{ flex: '1 1 340px', background: isDark ? '#0a0a0f' : '#f8f7fa', borderRadius: 16, border: isDark ? '1px solid rgba(139,92,246,0.1)' : '1px solid rgba(0,0,0,0.05)', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 240 }}>
           <span style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', color: isDark ? '#5a4d7a' : '#9ca3af', textTransform: 'uppercase', marginBottom: '1.5rem' }}>Live Camera</span>
-          <motion.div 
-            animate={{ scale: [1, 1.1, 1] }} 
+          <motion.div
+            animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
             style={{ width: 64, height: 64, borderRadius: '50%', background: isDark ? 'rgba(139,92,246,0.15)' : 'rgba(139,92,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', border: '1px solid rgba(139,92,246,0.3)' }}
           >
@@ -316,20 +316,20 @@ function DashboardMockup({ isDark }) {
           </motion.div>
           <span style={{ fontSize: '0.85rem', color: isDark ? '#7c6fa0' : '#6b7280' }}>Detecting gesture...</span>
         </div>
-        
+
         {/* Translation Output Area */}
         <div style={{ flex: '1 1 340px', display: 'flex', flexDirection: 'column', justifyItems: 'center', paddingTop: '1rem' }}>
           <span style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', color: isDark ? '#5a4d7a' : '#9ca3af', textTransform: 'uppercase', marginBottom: '1.5rem', alignSelf: 'center' }}>Translation Output</span>
-          
+
           <div style={{ background: isDark ? 'rgba(139,92,246,0.08)' : '#f3f0ff', borderRadius: 16, padding: '1.25rem', border: isDark ? '1px solid rgba(139,92,246,0.2)' : '1px solid rgba(139,92,246,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <span style={{ fontSize: '1.05rem', fontWeight: 500, color: isDark ? '#e4e0f8' : '#4c1d95' }}>Hello — nice to meet you</span>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#10b981' }}>97% conf.</span>
           </div>
-          
+
           <p style={{ fontSize: '0.85rem', color: isDark ? '#7a7088' : '#6b7280', textAlign: 'center', lineHeight: 1.6, marginBottom: '2rem', padding: '0 1rem' }}>
             Recognized sign: greeting + introduction sequence detected in real time.
           </p>
-          
+
           <div style={{ alignSelf: 'center', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: isDark ? 'rgba(16,185,129,0.1)' : '#dcfce7', color: '#10b981', padding: '0.4rem 1.2rem', borderRadius: 999, fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             <Activity size={14} />
             Speaking aloud
@@ -366,7 +366,7 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
         onStart={onStart}
         onTeam={onTeam}
         scrollToHow={scrollToHow}
-        onLogoClick={() => {}}
+        onLogoClick={() => { }}
       />
       {showVideo && <VideoModal isDark={isDark} onClose={() => setShowVideo(false)} />}
 
@@ -452,6 +452,8 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
               display: 'inline-block',
               overflow: 'visible',
               paddingLeft: '0.15rem',
+              paddingTop: '0.2rem',
+              marginTop: '-0.2rem',
             }}
           >
             <span style={{ position: 'absolute', top: -5, left: -5, opacity: 0.5, WebkitTextStroke: isDark ? '1px rgba(244,114,182,0.4)' : '1px rgba(244,114,182,0.3)', color: 'transparent', fontStyle: 'italic', zIndex: -1, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
@@ -459,7 +461,7 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
             <span style={{ position: 'absolute', top: -15, left: -15, opacity: 0.15, WebkitTextStroke: isDark ? '1px rgba(124,58,237,0.2)' : '1px rgba(124,58,237,0.1)', color: 'transparent', fontStyle: 'italic', zIndex: -3, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
             <span
               style={{
-                fontStyle: 'italic',
+                fontStyle: 'bold',
                 background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 30%, #7c3aed 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -598,7 +600,7 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
             </span>
           ))}
         </motion.div>
-        
+
         {/* Dashboard Mockup Component */}
         <DashboardMockup isDark={isDark} />
       </section>
@@ -846,7 +848,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
         isDark={isDark}
         toggleDark={toggleDark}
         onStart={onStart}
-        onTeam={() => {}}
+        onTeam={() => { }}
         scrollToHow={onBack}
         onLogoClick={onBack}
       />
@@ -951,9 +953,9 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
           }}
         >
           The people behind{' '}
-          <span 
-            style={{ 
-              fontStyle: 'italic', 
+          <span
+            style={{
+              fontStyle: 'bold',
               background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 30%, #7c3aed 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
@@ -981,10 +983,10 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
         </motion.p>
 
         <motion.div
-           initial={{ opacity: 0 }}
-           animate={{ opacity: 1 }}
-           transition={{ delay: 0.4 }}
-           style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: isDark ? '#7a7088' : '#6b7280', fontSize: '0.85rem', fontWeight: 600, marginTop: '2rem' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: isDark ? '#7a7088' : '#6b7280', fontSize: '0.85rem', fontWeight: 600, marginTop: '2rem' }}
         >
           <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(244,114,182,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <MapPin size={12} color="#f472b6" />
@@ -1019,7 +1021,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
       {/* ═══════════ DEPLOYMENT SECTION ═══════════ */}
       <section style={{ padding: '6rem 2rem 8rem', display: 'flex', justifyContent: 'center', borderTop: isDark ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(0,0,0,0.05)', background: isDark ? '#0f0a1e' : '#faf9fc' }}>
         <div style={{ maxWidth: 1100, width: '100%', display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'flex-start' }}>
-          
+
           {/* Left Column */}
           <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
@@ -1028,16 +1030,16 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
                 For Organizations
               </span>
             </div>
-            
+
             <h2 style={{ fontFamily: SERIF, fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 400, lineHeight: 1.1, color: isDark ? '#f0ecff' : '#1a1030', marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
               Deploy SignSync <br />across your <br />
-              <span style={{ fontStyle: 'italic', background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 30%, #7c3aed 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>entire operation</span>
+              <span style={{ fontStyle: 'bold', background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 30%, #7c3aed 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>entire operation</span>
             </h2>
-            
+
             <p style={{ fontSize: '0.95rem', lineHeight: 1.65, color: isDark ? '#7a7088' : '#6b7280', marginBottom: '2.5rem', maxWidth: 460 }}>
               From hospital reception desks to government service counters — SignSync integrates in minutes, runs on existing hardware, and requires zero staff training.
             </p>
-            
+
             {/* Feature Stack */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' }}>
               <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#fff', border: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.05)', boxShadow: isDark ? 'none' : '0 4px 20px rgba(0,0,0,0.03)', borderRadius: 16, padding: '1.5rem', display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
@@ -1062,7 +1064,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
                 </div>
               </div>
             </div>
-            
+
             {/* CTAs */}
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.9rem 2rem', borderRadius: '40px', fontWeight: 600, fontSize: '0.9rem', background: 'linear-gradient(135deg, #d946ef, #7c3aed)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: SANS }}>
@@ -1073,7 +1075,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
               </motion.button>
             </div>
           </div>
-          
+
           {/* Right Column Database Mockup */}
           <div style={{ flex: '1 1 480px', background: isDark ? '#080510' : '#1a1030', borderRadius: 24, padding: '3.5rem 3rem', border: isDark ? '1px solid rgba(255,255,255,0.05)' : '1px solid rgba(0,0,0,0.08)', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.3)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3.5rem' }}>
@@ -1082,7 +1084,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
                 <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981' }} /> ACTIVE NOW
               </div>
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3.5rem', marginBottom: '4.5rem' }}>
               <div>
                 <div style={{ fontFamily: SERIF, fontSize: '2.5rem', color: '#d946ef', lineHeight: 1, marginBottom: '0.75rem' }}>24+</div>
@@ -1101,7 +1103,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
                 <div style={{ fontSize: '0.75rem', color: '#7a7088' }}>Data sent to servers</div>
               </div>
             </div>
-            
+
             <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em', color: '#5a4d7a', textTransform: 'uppercase', display: 'block', marginBottom: '1.5rem' }}>Deployment Types</span>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
@@ -1111,7 +1113,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
                 </div>
                 <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#10b981', letterSpacing: '0.05em' }}>LIVE</span>
               </div>
-              
+
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <div style={{ width: 28, height: 28, borderRadius: 6, background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9d8ec8' }}><Landmark size={14} /></div>
@@ -1119,7 +1121,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
                 </div>
                 <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#10b981', letterSpacing: '0.05em' }}>LIVE</span>
               </div>
-              
+
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <div style={{ width: 28, height: 28, borderRadius: 6, background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9d8ec8' }}><BarChart3 size={14} /></div>
@@ -1127,7 +1129,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
                 </div>
                 <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#f59e0b', letterSpacing: '0.05em' }}>PILOT</span>
               </div>
-              
+
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <div style={{ width: 28, height: 28, borderRadius: 6, background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9d8ec8' }}><GraduationCap size={14} /></div>
@@ -1136,7 +1138,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
                 <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#f59e0b', letterSpacing: '0.05em' }}>PILOT</span>
               </div>
             </div>
-            
+
           </div>
         </div>
       </section>
@@ -1216,7 +1218,7 @@ function TeamCard({ member, isDark, index }) {
           >
             {/* Background Image Layer */}
             <div style={{ position: 'absolute', inset: 0, background: isDark ? '#1a1030' : '#f0ecff', backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: isDark ? 0.8 : 1 }} />
-            
+
             {/* Gradient Overlay for Text Readability */}
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)' }} />
 
@@ -1225,7 +1227,7 @@ function TeamCard({ member, isDark, index }) {
               <h3 style={{ fontFamily: SERIF, fontSize: '1.6rem', fontWeight: 600, color: '#f0ecff', marginBottom: '0.5rem', lineHeight: 1.1 }}>{name}</h3>
               <p style={{ fontFamily: SERIF, fontSize: '1rem', fontStyle: 'italic', color: '#e2d8f0', margin: 0, opacity: 0.95 }}>{quote}</p>
             </div>
-            
+
             {/* Colored bottom glow line */}
             <div style={{ position: 'absolute', bottom: 0, left: '2rem', right: '2rem', height: 4, borderRadius: '4px 4px 0 0', background: color, boxShadow: `0 -4px 12px ${color}60` }} />
           </motion.div>
@@ -1350,15 +1352,15 @@ function StepCard({ icon, title, desc, isDark, step, badgeIcon, badgeText, badge
       >
         {icon}
       </div>
-      
+
       <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.1em', color: isDark ? '#5a4d7a' : '#9ca3af', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
         STEP {step}
       </span>
-      
+
       <h3 style={{ fontWeight: 700, fontSize: '1.2rem', marginBottom: '0.75rem', color: textColor, letterSpacing: '-0.02em' }}>
         {title}
       </h3>
-      
+
       <p style={{ fontSize: '0.85rem', lineHeight: 1.6, color: descColor, margin: '0 0 2rem 0', flexGrow: 1 }}>
         {desc}
       </p>
