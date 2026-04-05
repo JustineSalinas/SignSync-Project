@@ -450,13 +450,13 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
             style={{
               position: 'relative',
               display: 'inline-block',
-              padding: '0 1.2rem',
               overflow: 'visible',
+              paddingLeft: '0.15rem',
             }}
           >
-            <span style={{ position: 'absolute', top: -5, right: -5, opacity: 0.5, WebkitTextStroke: isDark ? '1px rgba(244,114,182,0.4)' : '1px rgba(244,114,182,0.3)', color: 'transparent', fontStyle: 'italic', zIndex: -1, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
-            <span style={{ position: 'absolute', top: -10, right: -10, opacity: 0.3, WebkitTextStroke: isDark ? '1px rgba(217,70,239,0.3)' : '1px rgba(217,70,239,0.2)', color: 'transparent', fontStyle: 'italic', zIndex: -2, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
-            <span style={{ position: 'absolute', top: -15, right: -15, opacity: 0.15, WebkitTextStroke: isDark ? '1px rgba(124,58,237,0.2)' : '1px rgba(124,58,237,0.1)', color: 'transparent', fontStyle: 'italic', zIndex: -3, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
+            <span style={{ position: 'absolute', top: -5, left: -5, opacity: 0.5, WebkitTextStroke: isDark ? '1px rgba(244,114,182,0.4)' : '1px rgba(244,114,182,0.3)', color: 'transparent', fontStyle: 'italic', zIndex: -1, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
+            <span style={{ position: 'absolute', top: -10, left: -10, opacity: 0.3, WebkitTextStroke: isDark ? '1px rgba(217,70,239,0.3)' : '1px rgba(217,70,239,0.2)', color: 'transparent', fontStyle: 'italic', zIndex: -2, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
+            <span style={{ position: 'absolute', top: -15, left: -15, opacity: 0.15, WebkitTextStroke: isDark ? '1px rgba(124,58,237,0.2)' : '1px rgba(124,58,237,0.1)', color: 'transparent', fontStyle: 'italic', zIndex: -3, userSelect: 'none', pointerEvents: 'none' }}>gap</span>
             <span
               style={{
                 fontStyle: 'italic',
