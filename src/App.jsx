@@ -105,7 +105,7 @@ function Navbar({ isDark, toggleDark, onStart, onTeam, scrollToHow, onLogoClick 
     >
       {/* Logo */}
       <div
-        style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', cursor: 'pointer' }}
+        style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', cursor: 'pointer' }}
         onClick={onLogoClick}
       >
         <div style={{ display: 'flex', alignItems: 'center', height: 26 }}>
@@ -123,7 +123,18 @@ function Navbar({ isDark, toggleDark, onStart, onTeam, scrollToHow, onLogoClick 
             }}
           />
         </div>
-        <GradientText text="SignSync" isDark={isDark} fontSize="1.1rem" italic={false} />
+        <span
+          style={{
+            fontFamily: SERIF,
+            fontWeight: 700,
+            fontSize: '1.15rem',
+            lineHeight: 1,
+            color: isDark ? '#ffffff' : '#1a1030',
+            marginTop: '0.1rem',
+          }}
+        >
+          SignSync
+        </span>
       </div>
 
       {/* Nav links */}
@@ -271,41 +282,49 @@ function CountingNumber({ value, suffix = '', prefix = '', isDark }) {
   return <span ref={ref}>{prefix}{displayValue}{suffix}</span>;
 }
 
-function GradientText({ text, isDark, fontSize = 'inherit', italic = true }) {
-  return (
-    <span
-      style={{
-        position: 'relative',
-        display: 'inline-block',
-        fontFamily: SERIF,
-        fontSize: fontSize,
-        lineHeight: 1.2,
-        paddingLeft: '0.15rem',
-        paddingTop: '0.2rem',
-        paddingBottom: '0.4rem',
-        marginTop: '-0.2rem',
-        marginBottom: '-0.3rem',
-        overflow: 'visible',
-        verticalAlign: 'middle',
-      }}
-    >
-      <span style={{ position: 'absolute', top: -5, left: -5, opacity: 0.5, WebkitTextStroke: isDark ? '1px rgba(244,114,182,0.4)' : '1px rgba(244,114,182,0.3)', color: 'transparent', fontStyle: italic ? 'italic' : 'normal', zIndex: -1, userSelect: 'none', pointerEvents: 'none' }}>{text}</span>
-      <span style={{ position: 'absolute', top: -10, left: -10, opacity: 0.3, WebkitTextStroke: isDark ? '1px rgba(217,70,239,0.3)' : '1px rgba(217,70,239,0.2)', color: 'transparent', fontStyle: italic ? 'italic' : 'normal', zIndex: -2, userSelect: 'none', pointerEvents: 'none' }}>{text}</span>
-      <span style={{ position: 'absolute', top: -15, left: -15, opacity: 0.15, WebkitTextStroke: isDark ? '1px rgba(124,58,237,0.2)' : '1px rgba(124,58,237,0.1)', color: 'transparent', fontStyle: italic ? 'italic' : 'normal', zIndex: -3, userSelect: 'none', pointerEvents: 'none' }}>{text}</span>
-      <span
+function GradientText({ text, fontSize = 'inherit', animate = false }) {
+  const containerStyle = {
+    position: 'relative',
+    display: 'inline-block',
+    fontFamily: SERIF,
+    fontSize: fontSize,
+    lineHeight: 1.2,
+    paddingLeft: '0.15rem',
+    paddingTop: '0.2rem',
+    overflow: 'visible',
+    verticalAlign: 'baseline',
+  };
+
+  const spanContent = (
+    <>
+      <motion.span
         style={{
           display: 'inline-block',
           fontWeight: 'bold',
-          background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 30%, #7c3aed 100%)',
+          background: 'linear-gradient(135deg, #f472b6 0%, #7c3aed 40%, #d946ef 60%, #f472b6 100%)',
+          backgroundSize: animate ? '200% auto' : '100% 100%',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           position: 'relative',
+          paddingBottom: '0.15em',
+          marginBottom: '-0.15em',
+          paddingRight: '0.05em',
+          marginRight: '-0.05em',
           zIndex: 1,
-          paddingBottom: '0.4rem',
         }}
+        animate={animate ? {
+          backgroundPosition: ['200% center', '-200% center'],
+        } : {}}
+        transition={animate ? { duration: 6, repeat: Infinity, ease: 'linear' } : {}}
       >
         {text}
-      </span>
+      </motion.span>
+    </>
+  );
+
+  return (
+    <span style={containerStyle}>
+      {spanContent}
     </span>
   );
 }
@@ -475,8 +494,8 @@ function LandingPage({ isDark, toggleDark, onStart, onTeam }) {
         >
           Bridging the
           <br />
-          <GradientText text="gap" isDark={isDark} />{' '}
-          in communication
+          <GradientText text="gap" isDark={isDark} animate={true} />
+          {' in communication'}
         </motion.h1>
 
         {/* Subtitle */}
@@ -957,16 +976,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
           }}
         >
           The people behind{' '}
-          <span
-            style={{
-              fontStyle: 'bold',
-              background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 30%, #7c3aed 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}
-          >
-            SignSync
-          </span>
+          <GradientText text="SignSync" animate={true} />
         </motion.h1>
 
         {/* Subtitle */}
@@ -1037,7 +1047,7 @@ function TeamPage({ isDark, toggleDark, onBack, onStart }) {
 
             <h2 style={{ fontFamily: SERIF, fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 400, lineHeight: 1.1, color: isDark ? '#f0ecff' : '#1a1030', marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
               Deploy SignSync <br />across your <br />
-              <GradientText text="entire operation" isDark={isDark} fontSize="inherit" />
+              <GradientText text="entire operation" fontSize="inherit" animate={true} />
             </h2>
 
             <p style={{ fontSize: '0.95rem', lineHeight: 1.65, color: isDark ? '#7a7088' : '#6b7280', marginBottom: '2.5rem', maxWidth: 460 }}>
