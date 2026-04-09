@@ -1,24 +1,25 @@
 import os
+from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from dotenv import load_dotenv
 
-# Load the API key from the .env file
-load_dotenv()
+# Load the API key from the backend/.env file
+env_path = Path(__file__).parent.parent / "backend" / ".env"
+load_dotenv(dotenv_path=env_path)
 
-# Initialize the Gemini Client
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# Initialize the Gemini Client (new SDK uses a Client object)
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 app = FastAPI(title="SignSync NLP Backend (Gemini Powered)")
 
 # --- CORS Configuration ---
-# Note: In production (Vercel), usually same-origin is handled via URL rewrites, 
-# but keeping this for local development and multi-port testing.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Simplified for serverless execution
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,17 +29,12 @@ class TranslationRequest(BaseModel):
     words: list[str]
 
 # --- The System Prompt ---
-system_instruction = """
-You are an expert Sign Language to English interpreter operating in a public service kiosk.
-The user will provide a stream of raw, fragmented words translated from hand gestures. 
-Your job is to infer their intent and restructure these fragments into a single, polite, grammatically correct, and natural-sounding sentence.
-Do not add extra conversational filler. Just output the refined sentence.
-"""
-
-# Gemini 1.5 Flash - optimized for speed/real-time
-model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
-    system_instruction=system_instruction
+SYSTEM_INSTRUCTION = (
+    "You are an expert Sign Language to English interpreter operating in a public service kiosk. "
+    "The user will provide a stream of raw, fragmented words translated from hand gestures. "
+    "Your job is to infer their intent and restructure these fragments into a single, polite, "
+    "grammatically correct, and natural-sounding sentence. "
+    "Do not add extra conversational filler. Just output the refined sentence."
 )
 
 @app.post("/translate")
@@ -49,22 +45,24 @@ async def translate_signs(request: TranslationRequest):
     raw_signs = " ".join(request.words)
 
     try:
-        response = model.generate_content(
-            f"Raw signs: {raw_signs}",
-            generation_config=genai.types.GenerationConfig(
-                temperature=0.4, # Slightly higher for more fluid sentence restructuring
-                max_output_tokens=100
-            )
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=f"Raw signs: {raw_signs}",
+            config=types.GenerateContentConfig(
+                system_instruction=SYSTEM_INSTRUCTION,
+                temperature=0.4,
+                max_output_tokens=100,
+            ),
         )
-        
+
         refined_sentence = response.text.strip()
-        
+
         return {
             "status": "success",
             "original_stream": request.words,
-            "refined_sentence": refined_sentence
+            "refined_sentence": refined_sentence,
         }
 
     except Exception as e:
         print(f"Gemini API Error: {e}")
-        raise HTTPException(status_code=500, detail="Error communicating with Gemini service.")
+        raise HTTPException(status_code=500, detail=f"Error communicating with Gemini service: {str(e)}")
