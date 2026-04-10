@@ -171,29 +171,32 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
               style={{
                 position: 'fixed',
                 top: 0,
+                left: 0,
                 right: 0,
                 bottom: 0,
-                width: '80%',
-                maxWidth: 320,
-                background: isDark ? darkTheme.surface : lightTheme.surface,
+                width: '100%',
+                background: isDark ? darkTheme.bg : lightTheme.bg,
                 zIndex: 102,
-                padding: '1.5rem',
+                padding: '2rem',
                 display: 'flex',
                 flexDirection: 'column',
-                boxShadow: '-10px 0 30px rgba(0,0,0,0.1)'
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', height: 32 }}>
+                  <img src="/signsync.png" alt="Logo" style={{ height: '100%', filter: isDark ? 'brightness(0) saturate(100%) invert(69%) sepia(18%) saturate(1142%) hue-rotate(218deg) brightness(101%) contrast(97%)' : 'brightness(0) saturate(100%) invert(26%) sepia(87%) saturate(5832%) hue-rotate(256deg) brightness(96%) contrast(92%)' }} />
+                  <span style={{ fontFamily: SERIF, fontWeight: 700, fontSize: '1.1rem', color: isDark ? darkTheme.text : lightTheme.text, marginLeft: '0.4rem', marginTop: '0.1rem' }}>SignSync</span>
+                </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   aria-label="Close mobile menu"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: isDark ? darkTheme.text : lightTheme.text }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: isDark ? darkTheme.text : lightTheme.text, padding: 0 }}
                 >
-                  <X size={24} />
+                  <X size={28} />
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'center', marginTop: '2rem' }}>
                 {navLinks.map((link) => (
                   <button
                     key={link.label}
@@ -205,12 +208,13 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      fontSize: '1.1rem',
-                      fontWeight: 500,
-                      textAlign: 'left',
+                      fontSize: '1.35rem',
+                      fontWeight: 600,
+                      textAlign: 'center',
                       color: isDark ? darkTheme.text : lightTheme.text,
                       fontFamily: SANS,
                       padding: '0.5rem 0',
+                      width: '100%'
                     }}
                   >
                     {link.label}

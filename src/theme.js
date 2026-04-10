@@ -27,11 +27,11 @@ export const darkTheme = {
 };
 
 export const lightTheme = {
-  bg: '#f6f4f0',
+  bg: '#f5f3ff',
   surface: '#ffffff',
   text: '#1a1030',
   textMuted: '#6b6080',
   textSubtle: '#9ca3af',
-  border: 'rgba(0,0,0,0.06)',
+  border: 'rgba(139,92,246,0.15)',
   glow: 'rgba(139,92,246,0.08)',
 };

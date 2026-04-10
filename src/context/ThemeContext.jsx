@@ -13,7 +13,7 @@ export function ThemeProvider({ children }) {
       document.body.style.background = '#0a0a0f';
       document.body.style.color = '#e4e0f8';
     } else {
-      document.body.style.background = '#f6f4f0';
+      document.body.style.background = '#f5f3ff';
       document.body.style.color = '#1a1030';
     }
     document.body.style.fontFamily = "'Inter', system-ui, -apple-system, sans-serif";
