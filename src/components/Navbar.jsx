@@ -24,10 +24,11 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
   ];
 
   return (
-    <nav
-      role="navigation"
-      aria-label="Main navigation"
-      style={{
+    <>
+      <nav
+        role="navigation"
+        aria-label="Main navigation"
+        style={{
         position: 'sticky',
         top: 0,
         zIndex: 100,
@@ -140,7 +141,6 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
         </button>
       </div>
 
-      {/* Mobile Menu Toggle Button */}
       <button
         className="md:hidden flex items-center justify-center p-2 rounded-lg"
         onClick={() => setIsMobileMenuOpen(true)}
@@ -149,9 +149,10 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
       >
         <Menu size={24} />
       </button>
+    </nav>
 
-      {/* Mobile Drawer */}
-      <AnimatePresence>
+    {/* Mobile Drawer */}
+    <AnimatePresence>
         {isMobileMenuOpen && (
           <>
             <motion.div
@@ -269,6 +270,6 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
           </>
         )}
       </AnimatePresence>
-    </nav>
+    </>
   );
 }
