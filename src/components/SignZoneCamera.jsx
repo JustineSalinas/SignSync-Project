@@ -118,7 +118,7 @@ export default function SignZoneCamera({ onExit }) {
 
           {/* User Guide Ghost (When no hands are found) */}
           {!isDetecting && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none bg-black/40 backdrop-blur-[2px] transition-all duration-500 pb-28 sm:pb-0">
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none bg-black/40 backdrop-blur-[2px] transition-all duration-500 pb-16 sm:pb-0">
               <div className="w-[50%] max-w-[200px] sm:w-64 aspect-[3/4] sm:aspect-auto sm:h-80 border-2 border-dashed border-white/40 rounded-[2rem] flex flex-col items-center justify-center mb-4 sm:mb-6 shadow-[0_0_30px_rgba(255,255,255,0.1)] relative">
                 <div className="absolute -top-3 px-3 bg-slate-900 border border-white/20 rounded-full text-white/70 text-[10px] sm:text-xs font-semibold tracking-widest uppercase">Align Here</div>
               </div>

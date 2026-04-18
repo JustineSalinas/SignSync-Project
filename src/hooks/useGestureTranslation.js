@@ -48,7 +48,7 @@ export function useGestureTranslation(currentWord) {
           return prev;
         });
       }
-    }, 1500);
+    }, 600);
 
     return () => clearTimeout(timer);
   }, [currentWord, wordStream]);
