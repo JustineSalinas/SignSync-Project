@@ -118,28 +118,39 @@ export default function SignZoneCamera({ onExit }) {
 
           {/* User Guide Ghost (When no hands are found) */}
           {!isDetecting && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none bg-black/40 backdrop-blur-sm transition-opacity">
-              <div className="w-64 h-80 border-2 border-dashed border-white/50 rounded-3xl flex items-center justify-center mb-4" />
-              <p className="text-white font-medium bg-black/50 px-4 py-2 rounded-full">Please step into the frame</p>
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none bg-black/40 backdrop-blur-[2px] transition-all duration-500 pb-20 sm:pb-0">
+              <div className="w-[55%] max-w-[240px] sm:w-64 aspect-[3/4] sm:aspect-auto sm:h-80 border-2 border-dashed border-white/40 rounded-[2rem] flex flex-col items-center justify-center mb-6 shadow-[0_0_30px_rgba(255,255,255,0.1)] relative">
+                <div className="absolute -top-3 px-3 bg-slate-900 border border-white/20 rounded-full text-white/70 text-xs font-semibold tracking-widest uppercase">Align Here</div>
+              </div>
+              <div className="bg-black/60 backdrop-blur-xl border border-white/20 px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl transform hover:scale-105 transition-transform">
+                <CameraIcon className="text-violet-400" size={20} />
+                <p className="text-white font-medium tracking-wide">Please step into the frame</p>
+              </div>
             </div>
           )}
 
-          {/* Bottom Gesture Guide (Pills) */}
-          <div className="absolute bottom-6 w-full flex justify-center px-4 z-20 pointer-events-none">
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-full">
-              {GESTURE_GUIDE.map((guide, idx) => (
-                <span 
-                  key={idx} 
-                  className={`backdrop-blur-md text-xs sm:text-sm font-medium px-4 py-2 rounded-full shadow-lg transition-all border`}
-                  style={{ 
-                    background: isDark ? 'rgba(30, 20, 50, 0.8)' : 'rgba(255, 255, 255, 0.9)',
-                    color: isDark ? colors.violet[400] : colors.slate[800],
-                    borderColor: isDark ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'
-                  }}
-                >
-                  {guide}
-                </span>
-              ))}
+          {/* Bottom Gesture Guide (Pills) - Scrollable Dock */}
+          <div className="absolute bottom-5 left-0 right-0 z-20 flex justify-center px-2 sm:px-4 pointer-events-auto">
+            <div 
+              className="flex items-center overflow-x-auto gap-2 sm:gap-3 py-3 px-4 sm:px-2 rounded-3xl sm:rounded-full bg-slate-900/40 sm:bg-transparent backdrop-blur-xl sm:backdrop-blur-none border border-white/10 sm:border-none shadow-2xl sm:shadow-none w-[95%] sm:w-auto max-w-full"
+              style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+            >
+              <div className="flex sm:flex-wrap items-center gap-2 sm:gap-3 justify-start sm:justify-center min-w-max sm:min-w-0 mx-auto px-1">
+                {GESTURE_GUIDE.map((guide, idx) => (
+                  <span 
+                    key={idx} 
+                    className="shrink-0 text-sm sm:text-sm font-bold tracking-wide px-5 py-2.5 rounded-full border transition-all duration-300 hover:scale-105 cursor-default uppercase"
+                    style={{ 
+                      background: isDark ? 'linear-gradient(135deg, rgba(20, 15, 35, 0.95), rgba(15, 10, 25, 0.95))' : 'linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 245, 255, 0.98))',
+                      color: isDark ? colors.violet[300] : colors.violet[800],
+                      borderColor: isDark ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.25)',
+                      boxShadow: isDark ? '0 4px 12px rgba(90, 30, 200, 0.4)' : '0 4px 15px rgba(139, 92, 246, 0.15)'
+                    }}
+                  >
+                    {guide}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
