@@ -118,28 +118,28 @@ export default function SignZoneCamera({ onExit }) {
 
           {/* User Guide Ghost (When no hands are found) */}
           {!isDetecting && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none bg-black/40 backdrop-blur-[2px] transition-all duration-500 pb-20 sm:pb-0">
-              <div className="w-[55%] max-w-[240px] sm:w-64 aspect-[3/4] sm:aspect-auto sm:h-80 border-2 border-dashed border-white/40 rounded-[2rem] flex flex-col items-center justify-center mb-6 shadow-[0_0_30px_rgba(255,255,255,0.1)] relative">
-                <div className="absolute -top-3 px-3 bg-slate-900 border border-white/20 rounded-full text-white/70 text-xs font-semibold tracking-widest uppercase">Align Here</div>
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none bg-black/40 backdrop-blur-[2px] transition-all duration-500 pb-28 sm:pb-0">
+              <div className="w-[50%] max-w-[200px] sm:w-64 aspect-[3/4] sm:aspect-auto sm:h-80 border-2 border-dashed border-white/40 rounded-[2rem] flex flex-col items-center justify-center mb-4 sm:mb-6 shadow-[0_0_30px_rgba(255,255,255,0.1)] relative">
+                <div className="absolute -top-3 px-3 bg-slate-900 border border-white/20 rounded-full text-white/70 text-[10px] sm:text-xs font-semibold tracking-widest uppercase">Align Here</div>
               </div>
-              <div className="bg-black/60 backdrop-blur-xl border border-white/20 px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl transform hover:scale-105 transition-transform">
-                <CameraIcon className="text-violet-400" size={20} />
-                <p className="text-white font-medium tracking-wide">Please step into the frame</p>
+              <div className="bg-black/60 backdrop-blur-xl border border-white/20 px-4 py-2 sm:px-6 sm:py-3 rounded-full flex items-center gap-2 sm:gap-3 shadow-2xl transform hover:scale-105 transition-transform">
+                <CameraIcon className="text-violet-400" size={16} />
+                <p className="text-white text-xs sm:text-base font-medium tracking-wide">Please step into the frame</p>
               </div>
             </div>
           )}
 
           {/* Bottom Gesture Guide (Pills) - Scrollable Dock */}
-          <div className="absolute bottom-5 left-0 right-0 z-20 flex justify-center px-2 sm:px-4 pointer-events-auto">
+          <div className="absolute bottom-3 sm:bottom-5 left-0 right-0 z-20 flex justify-center px-2 sm:px-4 pointer-events-auto">
             <div 
-              className="flex items-center overflow-x-auto gap-2 sm:gap-3 py-3 px-4 sm:px-2 rounded-3xl sm:rounded-full bg-slate-900/40 sm:bg-transparent backdrop-blur-xl sm:backdrop-blur-none border border-white/10 sm:border-none shadow-2xl sm:shadow-none w-[95%] sm:w-auto max-w-full"
+              className="flex items-center overflow-x-auto gap-1.5 sm:gap-3 py-2.5 px-2.5 sm:px-2 rounded-[1.25rem] sm:rounded-full bg-slate-900/60 sm:bg-transparent backdrop-blur-xl sm:backdrop-blur-none border border-white/10 sm:border-none shadow-2xl sm:shadow-none w-full sm:w-auto max-w-full"
               style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
             >
-              <div className="flex sm:flex-wrap items-center gap-2 sm:gap-3 justify-start sm:justify-center min-w-max sm:min-w-0 mx-auto px-1">
+              <div className="flex sm:flex-wrap items-center gap-1.5 sm:gap-3 justify-start sm:justify-center min-w-max sm:min-w-0 mx-auto px-1">
                 {GESTURE_GUIDE.map((guide, idx) => (
                   <span 
                     key={idx} 
-                    className="shrink-0 text-sm sm:text-sm font-bold tracking-wide px-5 py-2.5 rounded-full border transition-all duration-300 hover:scale-105 cursor-default uppercase"
+                    className="shrink-0 text-[10px] sm:text-sm font-bold tracking-widest px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full border transition-all duration-300 hover:scale-105 cursor-default uppercase"
                     style={{ 
                       background: isDark ? 'linear-gradient(135deg, rgba(20, 15, 35, 0.95), rgba(15, 10, 25, 0.95))' : 'linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 245, 255, 0.98))',
                       color: isDark ? colors.violet[300] : colors.violet[800],
