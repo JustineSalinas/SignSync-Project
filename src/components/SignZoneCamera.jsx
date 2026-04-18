@@ -125,15 +125,24 @@ export default function SignZoneCamera({ onExit }) {
           )}
 
           {/* Bottom Gesture Guide (Pills) */}
-          <div className="absolute bottom-4 w-full flex justify-center px-4 z-20 pointer-events-none">
-            <div className="flex flex-wrap justify-center gap-2">
+          <div className="absolute bottom-6 w-full flex justify-center px-4 z-20 pointer-events-none">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-full">
               {GESTURE_GUIDE.map((guide, idx) => (
-                <span key={idx} className="bg-white/80 backdrop-blur-md text-slate-800 text-xs sm:text-sm font-medium px-3 py-1.5 rounded-full shadow-sm">
+                <span 
+                  key={idx} 
+                  className={`backdrop-blur-md text-xs sm:text-sm font-medium px-4 py-2 rounded-full shadow-lg transition-all border`}
+                  style={{ 
+                    background: isDark ? 'rgba(30, 20, 50, 0.8)' : 'rgba(255, 255, 255, 0.9)',
+                    color: isDark ? colors.violet[400] : colors.slate[800],
+                    borderColor: isDark ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'
+                  }}
+                >
                   {guide}
                 </span>
               ))}
             </div>
           </div>
+
         </section>
 
         {/* RIGHT COLUMN: Translation Panel */}
