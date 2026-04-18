@@ -41,20 +41,23 @@ export default function SignZoneCamera({ onExit }) {
   // 4. TTS Hook
   const { repeatAudio } = useSpeechSynthesis(finalSentence);
 
-  // 5. Drawing Loop (Canvas overlay)
+  // 5. Drawing Loop (Canvas overlay) — runs on every new landmarks update
   useEffect(() => {
-    if (!landmarks || !canvasRef.current || !videoRef.current) return;
-    const canvasCtx = canvasRef.current.getContext('2d');
+    if (!canvasRef.current || !videoRef.current) return;
     const canvas = canvasRef.current;
     const video = videoRef.current;
-    
-    // Safety check just in case video dimensions aren't ready
-    if(video.videoWidth === 0) return;
+    if (video.videoWidth === 0) return;
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvasCtx.save();
+    // Only resize canvas when video dimensions actually change (avoids GPU flush every frame)
+    if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+    }
+
+    const canvasCtx = canvas.getContext('2d');
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (!landmarks) return;
 
     const drawConnectors = window.drawConnectors;
     const drawLandmarks = window.drawLandmarks;
@@ -63,22 +66,20 @@ export default function SignZoneCamera({ onExit }) {
     if (landmarks.rightHand) {
       const detected = detectGesture(landmarks.rightHand);
       setCurrentWord(detected || "");
-      if(drawConnectors && drawLandmarks) {
-        drawConnectors(canvasCtx, landmarks.rightHand, HAND_CONNECTIONS, { color: colors.violet[600], lineWidth: 4 });
-        drawLandmarks(canvasCtx, landmarks.rightHand, { color: '#ffffff', lineWidth: 2, radius: 3 });
+      if (drawConnectors && drawLandmarks) {
+        drawConnectors(canvasCtx, landmarks.rightHand, HAND_CONNECTIONS, { color: colors.violet[600], lineWidth: 3 });
+        drawLandmarks(canvasCtx, landmarks.rightHand, { color: '#ffffff', lineWidth: 1, radius: 4 });
       }
     } else if (landmarks.leftHand) {
       const detected = detectGesture(landmarks.leftHand);
       setCurrentWord(detected || "");
-      if(drawConnectors && drawLandmarks) {
-        drawConnectors(canvasCtx, landmarks.leftHand, HAND_CONNECTIONS, { color: colors.violet[400], lineWidth: 4 });
-        drawLandmarks(canvasCtx, landmarks.leftHand, { color: '#ffffff', lineWidth: 2, radius: 3 });
+      if (drawConnectors && drawLandmarks) {
+        drawConnectors(canvasCtx, landmarks.leftHand, HAND_CONNECTIONS, { color: colors.violet[400], lineWidth: 3 });
+        drawLandmarks(canvasCtx, landmarks.leftHand, { color: '#ffffff', lineWidth: 1, radius: 4 });
       }
     } else {
       setCurrentWord("");
     }
-    
-    canvasCtx.restore();
   }, [landmarks]);
 
   const handleClear = () => {
