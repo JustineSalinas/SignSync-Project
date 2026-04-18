@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 export const useMediaPipe = (videoElement) => {
   const [landmarks, setLandmarks] = useState(null);
   const [isDetecting, setIsDetecting] = useState(false);
+  const [cameraError, setCameraError] = useState(null);
 
   useEffect(() => {
     if (!videoElement) return;
@@ -36,13 +37,23 @@ export const useMediaPipe = (videoElement) => {
 
     const camera = new Camera(videoElement, {
       onFrame: async () => {
-        await holistic.send({ image: videoElement });
+        try {
+          await holistic.send({ image: videoElement });
+        } catch (e) {
+          console.error("Holistic processing error", e);
+        }
       },
       width: 1280,
       height: 720,
     });
 
-    camera.start();
+    camera.start().catch((err) => {
+      console.error("Camera start error:", err);
+      setCameraError(err.name === 'NotAllowedError' 
+        ? "Camera access denied. Please allow permissions in your browser."
+        : "Failed to start camera: " + err.message
+      );
+    });
 
     return () => {
       holistic.close();
@@ -50,6 +61,6 @@ export const useMediaPipe = (videoElement) => {
     };
   }, [videoElement]);
 
-  return { landmarks, isDetecting };
+  return { landmarks, isDetecting, cameraError };
 };
 

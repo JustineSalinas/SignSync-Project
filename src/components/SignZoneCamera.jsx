@@ -27,7 +27,7 @@ export default function SignZoneCamera({ onExit }) {
   }, []);
 
   // 2. Initialize MediaPipe via robust custom hook
-  const { isDetecting, landmarks } = useMediaPipe(videoElement);
+  const { isDetecting, landmarks, cameraError } = useMediaPipe(videoElement);
 
   // 3. API Translation Hook
   const {
@@ -116,8 +116,20 @@ export default function SignZoneCamera({ onExit }) {
           <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover transform -scale-x-100" playsInline muted></video>
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-10 pointer-events-none transform -scale-x-100"></canvas>
 
+          {/* Camera Error State */}
+          {cameraError && (
+            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/90 backdrop-blur-md p-6 text-center">
+              <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 mb-4">
+                <AlertTriangle size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Camera Access Denied</h3>
+              <p className="text-slate-300 max-w-md">{cameraError}</p>
+              <p className="text-slate-400 text-sm mt-4">Please enable camera access via your browser settings (usually a lock icon next to the URL) and refresh the page.</p>
+            </div>
+          )}
+
           {/* User Guide Ghost (When no hands are found) */}
-          {!isDetecting && (
+          {!isDetecting && !cameraError && (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none bg-black/40 backdrop-blur-[2px] transition-all duration-500 pb-16 sm:pb-0">
               <div className="w-[50%] max-w-[200px] sm:w-64 aspect-[3/4] sm:aspect-auto sm:h-80 border-2 border-dashed border-white/40 rounded-[2rem] flex flex-col items-center justify-center mb-4 sm:mb-6 shadow-[0_0_30px_rgba(255,255,255,0.1)] relative">
                 <div className="absolute -top-3 px-3 bg-slate-900 border border-white/20 rounded-full text-white/70 text-[10px] sm:text-xs font-semibold tracking-widest uppercase">Align Here</div>
