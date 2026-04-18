@@ -117,17 +117,60 @@ export default function SignZoneCamera({ onExit }) {
           <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover transform -scale-x-100" playsInline muted></video>
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-10 pointer-events-none transform -scale-x-100"></canvas>
 
-          {/* Camera Error State */}
+          {/* Camera Error State — Full-page helpful guide */}
           {cameraError && (
-            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/90 backdrop-blur-md p-6 text-center">
-              <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 mb-4">
-                <AlertTriangle size={32} />
+            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 p-6 text-center overflow-y-auto">
+              {/* Icon */}
+              <div className="w-20 h-20 rounded-full bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400 mb-5 shrink-0">
+                <AlertTriangle size={36} />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Camera Access Denied</h3>
-              <p className="text-slate-300 max-w-md">{cameraError}</p>
-              <p className="text-slate-400 text-sm mt-4">Please enable camera access via your browser settings (usually a lock icon next to the URL) and refresh the page.</p>
+
+              <h3 className="text-2xl font-bold text-white mb-2">Camera Access Denied</h3>
+              <p className="text-slate-400 max-w-sm mb-6 text-sm leading-relaxed">
+                Your browser is blocking camera access for this site. Follow the steps below for your browser to fix it.
+              </p>
+
+              {/* Step-by-step instructions */}
+              <div className="w-full max-w-sm space-y-3 mb-6 text-left">
+                {/* Chrome / Brave */}
+                <div className="bg-slate-800/70 border border-slate-700 rounded-2xl p-4">
+                  <p className="text-violet-400 font-semibold text-xs uppercase tracking-widest mb-2">Chrome / Brave</p>
+                  <ol className="text-slate-300 text-sm space-y-1 list-decimal list-inside">
+                    <li>Tap the <span className="text-white font-medium">🔒 lock icon</span> in the address bar</li>
+                    <li>Tap <span className="text-white font-medium">"Site settings"</span></li>
+                    <li>Set <span className="text-white font-medium">Camera → Allow</span></li>
+                    <li>Come back and tap <span className="text-white font-medium">"Try Again"</span> below</li>
+                  </ol>
+                </div>
+
+                {/* Safari */}
+                <div className="bg-slate-800/70 border border-slate-700 rounded-2xl p-4">
+                  <p className="text-violet-400 font-semibold text-xs uppercase tracking-widest mb-2">Safari (iPhone / iPad)</p>
+                  <ol className="text-slate-300 text-sm space-y-1 list-decimal list-inside">
+                    <li>Open <span className="text-white font-medium">Settings → Safari</span></li>
+                    <li>Tap <span className="text-white font-medium">Camera</span></li>
+                    <li>Select <span className="text-white font-medium">"Allow"</span></li>
+                    <li>Return to this page and tap <span className="text-white font-medium">"Try Again"</span></li>
+                  </ol>
+                </div>
+              </div>
+
+              {/* Retry button — reloads the page to re-trigger permission prompt */}
+              <button
+                onClick={() => window.location.reload()}
+                className="flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 active:scale-95"
+                style={{ background: 'linear-gradient(135deg, #7c3aed, #6d28d9)', boxShadow: '0 0 24px rgba(124,58,237,0.5)' }}
+              >
+                <RotateCcw size={16} />
+                Try Again
+              </button>
+
+              <p className="text-slate-600 text-xs mt-4 max-w-xs">
+                After allowing access, tap "Try Again" — the browser will ask for permission again.
+              </p>
             </div>
           )}
+
 
           {/* User Guide Ghost (When no hands are found) */}
           {!isDetecting && !cameraError && (
