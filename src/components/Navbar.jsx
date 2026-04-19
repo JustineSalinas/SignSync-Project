@@ -89,7 +89,7 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
                 border: `1px solid ${isDark ? 'rgba(139,92,246,0.3)' : 'rgba(139,92,246,0.2)'}`,
                 color: isDark ? colors.violet[400] : colors.violet[600],
               }}>
-              <span style={{ fontSize: '1rem' }}>{language.flag}</span>
+              <img src={language.flag} alt={`${language.label} flag`} width="20" height="15" style={{ borderRadius: '2px', objectFit: 'cover' }} />
               <span>{language.short}</span>
               <ChevronDown size={12} style={{ transition: 'transform 0.2s', transform: isLangOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
             </button>
@@ -124,7 +124,7 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
                       onMouseEnter={(e) => { if (language.code !== lang.code) e.currentTarget.style.background = isDark ? 'rgba(139,92,246,0.08)' : 'rgba(139,92,246,0.04)'; }}
                       onMouseLeave={(e) => { if (language.code !== lang.code) e.currentTarget.style.background = 'transparent'; }}
                     >
-                      <span style={{ fontSize: '1.1rem' }}>{lang.flag}</span>
+                      <img src={lang.flag} alt={`${lang.label} flag`} width="20" height="15" style={{ borderRadius: '2px', objectFit: 'cover' }} />
                       <span>{lang.label}</span>
                       {language.code === lang.code && (
                         <span style={{ marginLeft: 'auto', width: 6, height: 6, borderRadius: '50%', background: isDark ? colors.violet[400] : colors.violet[600] }} />
@@ -227,7 +227,7 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
                           background: isSelected ? (isDark ? 'rgba(139,92,246,0.2)' : 'rgba(139,92,246,0.08)') : (isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'),
                           boxShadow: isSelected ? `0 0 0 3px ${isDark ? 'rgba(139,92,246,0.2)' : 'rgba(139,92,246,0.1)'}` : 'none',
                         }}>
-                        <span style={{ fontSize: '1.6rem' }}>{lang.flag}</span>
+                        <img src={lang.flag} alt={`${lang.label} flag`} width="28" height="21" style={{ borderRadius: '3px', objectFit: 'cover', marginBottom: '4px' }} />
                         <span style={{
                           fontSize: '0.72rem', fontWeight: isSelected ? 700 : 500,
                           color: isSelected ? (isDark ? colors.violet[400] : colors.violet[600]) : (isDark ? '#9d8ec8' : '#6b6080'),

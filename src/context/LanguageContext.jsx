@@ -2,9 +2,9 @@ import React, { createContext, useContext, useState, useMemo } from 'react';
 import { translations } from './translations';
 
 export const LANGUAGES = [
-  { code: 'en', label: 'English', flag: '🇺🇸', short: 'EN' },
-  { code: 'tl', label: 'Tagalog', flag: '🇵🇭', short: 'TL' },
-  { code: 'hil', label: 'Hiligaynon', flag: '🇵🇭', short: 'HIL' },
+  { code: 'en', label: 'English', flag: 'https://flagcdn.com/w40/us.png', short: 'EN' },
+  { code: 'tl', label: 'Tagalog', flag: 'https://flagcdn.com/w40/ph.png', short: 'TL' },
+  { code: 'hil', label: 'Hiligaynon', flag: 'https://flagcdn.com/w40/ph.png', short: 'HIL' },
 ];
 
 const LanguageContext = createContext();
