@@ -231,7 +231,7 @@ export default function LandingPage({ onStart, onTeam }) {
           { num: 500, pref: '', suff: '+', text: t('stat_3'), color: '#f59e0b' },
           { num: 0, pref: '', suff: 'kb', text: t('stat_4'), color: '#f472b6' },
         ].map((stat, i) => (
-          <div key={stat.text} style={{ padding: '3rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justify-center: 'center', borderRight: i < 3 ? `1px solid ${isDark ? darkTheme.border : lightTheme.border}` : 'none' }}>
+          <div key={stat.text} style={{ padding: '3rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRight: i < 3 ? `1px solid ${isDark ? darkTheme.border : lightTheme.border}` : 'none' }}>
             <span style={{ fontFamily: SERIF, fontSize: '2.5rem', fontWeight: 400, color: stat.color, lineHeight: 1, marginBottom: '0.5rem' }}>
               <CountingNumber value={stat.num} suffix={stat.suff} prefix={stat.pref} />
             </span>
