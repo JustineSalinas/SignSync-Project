@@ -130,7 +130,7 @@ export default function SignZoneCamera({ onExit }) {
                 cursor: 'pointer',
               }}
             >
-              <span className="text-base leading-none">{language.flag}</span>
+              <img src={language.flag} alt="flag" width="18" height="13" style={{ borderRadius: '2px', objectFit: 'cover' }} />
               <span className="hidden xs:inline">{language.short}</span>
               <ChevronDown size={12} style={{ transition: 'transform 0.2s', transform: isLangOpen ? 'rotate(180deg)' : 'none' }} />
             </button>
@@ -168,7 +168,7 @@ export default function SignZoneCamera({ onExit }) {
                           : (isDark ? '#9d8ec8' : '#6b6080'),
                       }}
                     >
-                      <span style={{ fontSize: '1.1rem' }}>{lang.flag}</span>
+                      <img src={lang.flag} alt="flag" width="18" height="13" style={{ borderRadius: '2px', objectFit: 'cover' }} />
                       <span>{lang.label}</span>
                       {language.code === lang.code && (
                         <span style={{ marginLeft: 'auto', width: 6, height: 6, borderRadius: '50%', background: isDark ? colors.violet[400] : colors.violet[600], flexShrink: 0 }} />
