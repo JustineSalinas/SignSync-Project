@@ -4,19 +4,19 @@ import { useState, useEffect } from 'react';
 const GEMINI_API_KEY = "AIzaSyAh0yc4H0LUHZe6GFqwpINfRus_AR9XA1U";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-const SYSTEM_PROMPT = `You are an expert Sign Language to English interpreter operating in a public service kiosk. 
+const SYSTEM_PROMPT = (langLabel) => `You are an expert Sign Language interpreter operating in a public service kiosk. 
 The user will provide a stream of raw, fragmented words translated from hand gestures. 
 Your job is to infer their intent and restructure these fragments into a single, polite, 
-grammatically correct, and natural-sounding sentence. 
-Do not add extra conversational filler. Just output the refined sentence.`;
+grammatically correct, and natural-sounding sentence IN ${langLabel.toUpperCase()}.
+Output ONLY the final sentence — no explanations, no labels, no extra text.`;
 
-async function callGemini(words) {
+async function callGemini(words, language) {
   const rawSigns = words.join(" ");
   const response = await fetch(GEMINI_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      system_instruction: { parts: [{ text: SYSTEM_PROMPT(language.label) }] },
       contents: [{ parts: [{ text: `Raw signs: ${rawSigns}` }] }],
       generationConfig: { temperature: 0.4, maxOutputTokens: 100 },
     }),
@@ -31,7 +31,7 @@ async function callGemini(words) {
   return data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? words.join(" ");
 }
 
-export function useGestureTranslation(currentWord) {
+export function useGestureTranslation(currentWord, language = { label: 'English' }) {
   const [wordStream, setWordStream] = useState([]);
   const [isFinalizing, setIsFinalizing] = useState(false);
   const [finalSentence, setFinalSentence] = useState("");
@@ -50,7 +50,7 @@ export function useGestureTranslation(currentWord) {
         setError(null);
 
         try {
-          const sentence = await callGemini(wordStream);
+          const sentence = await callGemini(wordStream, language);
           setFinalSentence(sentence);
         } catch (err) {
           console.error("Gemini Translation Error:", err);

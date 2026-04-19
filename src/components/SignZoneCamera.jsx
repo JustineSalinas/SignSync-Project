@@ -1,9 +1,10 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Hand, Repeat, RotateCcw, Camera as CameraIcon, Moon, SunMedium, AlertTriangle } from 'lucide-react';
+import { Hand, Repeat, RotateCcw, Camera as CameraIcon, Moon, SunMedium, AlertTriangle, ChevronDown } from 'lucide-react';
 import { useMediaPipe } from '../hooks/useMediaPipe';
 import { detectGesture } from '../utils/gestureRecognizer';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 import { darkTheme, lightTheme, colors } from '../theme';
 
 import { useGestureTranslation } from '../hooks/useGestureTranslation';
@@ -13,7 +14,19 @@ const GESTURE_GUIDE = ["Hello", "Help", "Appointment", "Yes", "No"];
 
 export default function SignZoneCamera({ onExit }) {
   const { isDark, toggleDark } = useTheme();
-  
+  const { language, setLanguage, LANGUAGES } = useLanguage();
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const langBtnRef = useRef(null);
+
+  // Close language dropdown on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (langBtnRef.current && !langBtnRef.current.contains(e.target)) setIsLangOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [videoElement, setVideoElement] = useState(null);
@@ -29,14 +42,14 @@ export default function SignZoneCamera({ onExit }) {
   // 2. Initialize MediaPipe via robust custom hook
   const { isDetecting, landmarks, cameraError } = useMediaPipe(videoElement);
 
-  // 3. API Translation Hook
+  // 3. API Translation Hook — pass selected language so Gemini responds in the right language
   const {
     wordStream,
     isFinalizing,
     finalSentence,
     error,
     clearTranslation
-  } = useGestureTranslation(currentWord);
+  } = useGestureTranslation(currentWord, language);
 
   // 4. TTS Hook
   const { repeatAudio } = useSpeechSynthesis(finalSentence);
@@ -90,7 +103,8 @@ export default function SignZoneCamera({ onExit }) {
   return (
     <div className={`flex flex-col h-screen transition-colors duration-300`} style={{ background: themeVars.bg, color: themeVars.text }}>
       {/* Top Navbar */}
-      <header role="banner" className={`h-16 flex items-center justify-between px-6 shrink-0 shadow-sm z-20 border-b`} style={{ background: themeVars.surface, borderColor: themeVars.border }}>
+      <header role="banner" className={`h-16 flex items-center justify-between px-4 sm:px-6 shrink-0 shadow-sm z-20 border-b`} style={{ background: themeVars.surface, borderColor: themeVars.border }}>
+        {/* Left: Logo / Back */}
         <button tabIndex={0} className="flex items-center gap-2 cursor-pointer bg-transparent border-none" onClick={onExit} aria-label="Exit Camera Mode">
           <div className={`w-8 h-8 rounded-lg flex items-center justify-center`} style={{ background: isDark ? colors.violet.darkBg : colors.violet.lightBg, color: isDark ? colors.violet[400] : colors.violet[600] }}>
             <CameraIcon size={18} />
@@ -100,13 +114,82 @@ export default function SignZoneCamera({ onExit }) {
             AI Sign Language Translator
           </span>
         </button>
-        <button
-          onClick={toggleDark}
-          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          className={`p-2 rounded-full transition-colors`} style={{ color: isDark ? colors.violet[400] : colors.slate[400] }}
-        >
-          {isDark ? <SunMedium size={20} /> : <Moon size={20} />}
-        </button>
+
+        {/* Right: Language + Theme toggle */}
+        <div className="flex items-center gap-2">
+          {/* Language Switcher */}
+          <div ref={langBtnRef} style={{ position: 'relative' }}>
+            <button
+              onClick={() => setIsLangOpen((p) => !p)}
+              aria-label="Switch output language"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-sm font-semibold transition-all"
+              style={{
+                background: isDark ? 'rgba(139,92,246,0.15)' : 'rgba(139,92,246,0.08)',
+                border: `1px solid ${isDark ? 'rgba(139,92,246,0.35)' : 'rgba(139,92,246,0.22)'}`,
+                color: isDark ? colors.violet[400] : colors.violet[600],
+                cursor: 'pointer',
+              }}
+            >
+              <span className="text-base leading-none">{language.flag}</span>
+              <span className="hidden xs:inline">{language.short}</span>
+              <ChevronDown size={12} style={{ transition: 'transform 0.2s', transform: isLangOpen ? 'rotate(180deg)' : 'none' }} />
+            </button>
+
+            <AnimatePresence>
+              {isLangOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.96 }}
+                  transition={{ duration: 0.14 }}
+                  className="absolute right-0 mt-2 rounded-2xl overflow-hidden shadow-2xl"
+                  style={{
+                    minWidth: 158,
+                    background: isDark ? '#0f0a1e' : '#ffffff',
+                    border: `1px solid ${isDark ? 'rgba(139,92,246,0.22)' : 'rgba(139,92,246,0.18)'}`,
+                    zIndex: 300,
+                  }}
+                >
+                  {LANGUAGES.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => { setLanguage(lang); setIsLangOpen(false); }}
+                      className="flex items-center gap-2.5 w-full text-left transition-all"
+                      style={{
+                        padding: '0.6rem 1rem',
+                        border: 'none', cursor: 'pointer',
+                        fontSize: '0.85rem',
+                        fontWeight: language.code === lang.code ? 700 : 500,
+                        background: language.code === lang.code
+                          ? (isDark ? 'rgba(139,92,246,0.2)' : 'rgba(139,92,246,0.08)')
+                          : 'transparent',
+                        color: language.code === lang.code
+                          ? (isDark ? colors.violet[400] : colors.violet[600])
+                          : (isDark ? '#9d8ec8' : '#6b6080'),
+                      }}
+                    >
+                      <span style={{ fontSize: '1.1rem' }}>{lang.flag}</span>
+                      <span>{lang.label}</span>
+                      {language.code === lang.code && (
+                        <span style={{ marginLeft: 'auto', width: 6, height: 6, borderRadius: '50%', background: isDark ? colors.violet[400] : colors.violet[600], flexShrink: 0 }} />
+                      )}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Theme toggle */}
+          <button
+            onClick={toggleDark}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            className="p-2 rounded-full transition-colors"
+            style={{ color: isDark ? colors.violet[400] : colors.slate[400], background: 'transparent', border: 'none', cursor: 'pointer' }}
+          >
+            {isDark ? <SunMedium size={20} /> : <Moon size={20} />}
+          </button>
+        </div>
       </header>
 
       {/* Main Split-Screen Content */}
