@@ -14,7 +14,7 @@ const GESTURE_GUIDE = ["Hello", "Help", "Appointment", "Yes", "No"];
 
 export default function SignZoneCamera({ onExit }) {
   const { isDark, toggleDark } = useTheme();
-  const { language, setLanguage, LANGUAGES } = useLanguage();
+  const { language, setLanguage, LANGUAGES, t } = useLanguage();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const langBtnRef = useRef(null);
 
@@ -109,9 +109,9 @@ export default function SignZoneCamera({ onExit }) {
           <div className={`w-8 h-8 rounded-lg flex items-center justify-center`} style={{ background: isDark ? colors.violet.darkBg : colors.violet.lightBg, color: isDark ? colors.violet[400] : colors.violet[600] }}>
             <CameraIcon size={18} />
           </div>
-          <h1 className="font-bold text-xl tracking-tight" style={{ color: themeVars.text }}>SignSync</h1>
+          <h1 className="font-bold text-xl tracking-tight" style={{ color: themeVars.text }}>{t('team_title_2')}</h1>
           <span className="text-sm font-medium hidden sm:inline-block ml-2 border-l pl-3" style={{ color: themeVars.textMuted, borderColor: themeVars.border }}>
-            AI Sign Language Translator
+            {t('cam_header_sub')}
           </span>
         </button>
 
@@ -121,7 +121,7 @@ export default function SignZoneCamera({ onExit }) {
           <div ref={langBtnRef} style={{ position: 'relative' }}>
             <button
               onClick={() => setIsLangOpen((p) => !p)}
-              aria-label="Switch output language"
+              aria-label={t('output_lang')}
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-sm font-semibold transition-all"
               style={{
                 background: isDark ? 'rgba(139,92,246,0.15)' : 'rgba(139,92,246,0.08)',
@@ -183,7 +183,7 @@ export default function SignZoneCamera({ onExit }) {
           {/* Theme toggle */}
           <button
             onClick={toggleDark}
-            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            aria-label={isDark ? t('light_mode') : t('dark_mode')}
             className="p-2 rounded-full transition-colors"
             style={{ color: isDark ? colors.violet[400] : colors.slate[400], background: 'transparent', border: 'none', cursor: 'pointer' }}
           >
@@ -208,9 +208,9 @@ export default function SignZoneCamera({ onExit }) {
                 <AlertTriangle size={36} />
               </div>
 
-              <h3 className="text-2xl font-bold text-white mb-2">Camera Access Denied</h3>
+              <h3 className="text-2xl font-bold text-white mb-2">{t('cam_err_title')}</h3>
               <p className="text-slate-400 max-w-sm mb-6 text-sm leading-relaxed">
-                Your browser is blocking camera access for this site. Follow the steps below for your browser to fix it.
+                {t('cam_err_desc')}
               </p>
 
               {/* Step-by-step instructions */}
@@ -245,11 +245,11 @@ export default function SignZoneCamera({ onExit }) {
                 style={{ background: 'linear-gradient(135deg, #7c3aed, #6d28d9)', boxShadow: '0 0 24px rgba(124,58,237,0.5)' }}
               >
                 <RotateCcw size={16} />
-                Try Again
+                {t('cam_err_try')}
               </button>
 
               <p className="text-slate-600 text-xs mt-4 max-w-xs">
-                After allowing access, tap "Try Again" — the browser will ask for permission again.
+                {t('cam_err_note')}
               </p>
             </div>
           )}
@@ -259,11 +259,11 @@ export default function SignZoneCamera({ onExit }) {
           {!isDetecting && !cameraError && (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none bg-black/40 backdrop-blur-[2px] transition-all duration-500 pb-16 sm:pb-0">
               <div className="w-[50%] max-w-[200px] sm:w-64 aspect-[3/4] sm:aspect-auto sm:h-80 border-2 border-dashed border-white/40 rounded-[2rem] flex flex-col items-center justify-center mb-4 sm:mb-6 shadow-[0_0_30px_rgba(255,255,255,0.1)] relative">
-                <div className="absolute -top-3 px-3 bg-slate-900 border border-white/20 rounded-full text-white/70 text-[10px] sm:text-xs font-semibold tracking-widest uppercase">Align Here</div>
+                <div className="absolute -top-3 px-3 bg-slate-900 border border-white/20 rounded-full text-white/70 text-[10px] sm:text-xs font-semibold tracking-widest uppercase">{t('cam_align')}</div>
               </div>
               <div className="bg-black/60 backdrop-blur-xl border border-white/20 px-4 py-2 sm:px-6 sm:py-3 rounded-full flex items-center gap-2 sm:gap-3 shadow-2xl transform hover:scale-105 transition-transform">
                 <CameraIcon className="text-violet-400" size={16} />
-                <p className="text-white text-xs sm:text-base font-medium tracking-wide">Please step into the frame</p>
+                <p className="text-white text-xs sm:text-base font-medium tracking-wide">{t('cam_step_in')}</p>
               </div>
             </div>
           )}
@@ -275,7 +275,7 @@ export default function SignZoneCamera({ onExit }) {
               style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
             >
               <div className="flex sm:flex-wrap items-center gap-1.5 sm:gap-3 justify-start sm:justify-center min-w-max sm:min-w-0 mx-auto px-1">
-                {GESTURE_GUIDE.map((guide, idx) => (
+                {[t('hello'), t('help'), t('appointment'), t('yes'), t('no')].map((guide, idx) => (
                   <span 
                     key={idx} 
                     className="shrink-0 text-[10px] sm:text-sm font-bold tracking-widest px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full border transition-all duration-300 hover:scale-105 cursor-default uppercase"
@@ -300,26 +300,26 @@ export default function SignZoneCamera({ onExit }) {
 
           {/* Panel Header */}
           <div className={`p-4 border-b flex items-center justify-between shrink-0`} style={{ borderColor: themeVars.border }}>
-            <h2 className="font-semibold text-lg" style={{ color: themeVars.text }}>Translation</h2>
+            <h2 className="font-semibold text-lg" style={{ color: themeVars.text }}>{t('cam_trans_title')}</h2>
             <div className="flex gap-2">
               <button
                 tabIndex={0}
                 onClick={repeatAudio}
                 disabled={!finalSentence || error}
-                aria-label="Repeat Audio"
+                aria-label={t('cam_trans_rep')}
                 className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-transparent border-none" 
                 style={{ color: isDark ? colors.violet[400] : colors.slate[800] }}
               >
-                <Repeat size={16} /> Repeat
+                <Repeat size={16} /> {t('cam_trans_rep')}
               </button>
               <button
                 tabIndex={0}
                 onClick={handleClear}
-                aria-label="Clear translation"
+                aria-label={t('cam_trans_clr')}
                 className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors bg-transparent border-none cursor-pointer" 
                 style={{ color: isDark ? colors.violet[400] : colors.slate[800] }}
               >
-                <RotateCcw size={16} /> Clear
+                <RotateCcw size={16} /> {t('cam_trans_clr')}
               </button>
             </div>
           </div>
@@ -339,7 +339,7 @@ export default function SignZoneCamera({ onExit }) {
                   <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center text-red-500 mb-4">
                     <AlertTriangle size={32} />
                   </div>
-                  <h3 className="text-xl font-bold text-red-500 mb-2">Translation Error</h3>
+                  <h3 className="text-xl font-bold text-red-500 mb-2">{t('cam_trans_err')}</h3>
                   <p className="text-base" style={{ color: themeVars.textMuted }}>{error}</p>
                 </motion.div>
               )}
@@ -352,8 +352,8 @@ export default function SignZoneCamera({ onExit }) {
                   className="flex flex-col items-center text-center" style={{ color: themeVars.textMuted }}
                 >
                   <Hand size={48} className="mb-4 opacity-50" />
-                  <h3 className="text-xl font-medium mb-1" style={{ color: themeVars.textSubtle }}>Show a sign to begin</h3>
-                  <p>Hold your hand steady in the camera</p>
+                  <h3 className="text-xl font-medium mb-1" style={{ color: themeVars.textSubtle }}>{t('cam_trans_wait1')}</h3>
+                  <p>{t('cam_trans_wait2')}</p>
                 </motion.div>
               )}
 
@@ -374,7 +374,7 @@ export default function SignZoneCamera({ onExit }) {
               {isFinalizing && !error && (
                 <motion.div key="finalizing" className="flex flex-col items-center">
                   <div className="w-8 h-8 border-4 rounded-full animate-spin mb-4" style={{ borderColor: isDark ? 'rgba(109,40,217,0.3)' : '#ddd6fe', borderTopColor: isDark ? colors.violet[400] : colors.violet[600] }} />
-                  <p className="font-medium animate-pulse" style={{ color: isDark ? colors.violet[400] : colors.violet[600] }}>Processing with AI...</p>
+                  <p className="font-medium animate-pulse" style={{ color: isDark ? colors.violet[400] : colors.violet[600] }}>{t('cam_trans_proc')}</p>
                 </motion.div>
               )}
 
@@ -397,7 +397,7 @@ export default function SignZoneCamera({ onExit }) {
           <div className="p-6 border-t shrink-0" style={{ borderColor: themeVars.border, background: themeVars.surface }}>
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm font-medium" style={{ color: themeVars.textMuted }}>
-                {currentWord && currentWord !== "SIGNING..." ? `Detecting: ${currentWord}` : "Detecting..."}
+                {currentWord && currentWord !== "SIGNING..." ? `${t('cam_det')}${currentWord}` : t('cam_det_wait')}
               </span>
             </div>
             <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: isDark ? 'rgba(109,40,217,0.2)' : '#f1f5f9' }}>

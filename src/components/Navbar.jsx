@@ -7,7 +7,7 @@ import { SERIF, SANS, colors, darkTheme, lightTheme } from '../theme';
 
 export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
   const { isDark, toggleDark } = useTheme();
-  const { language, setLanguage, LANGUAGES } = useLanguage();
+  const { language, setLanguage, LANGUAGES, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const langRef = useRef(null);
@@ -27,8 +27,8 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { label: 'How it works', action: scrollToHow },
-    { label: 'For Organizations', action: onTeam },
+    { label: t('nav_how'), action: scrollToHow },
+    { label: t('nav_org'), action: onTeam },
   ];
 
   return (
@@ -61,8 +61,8 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
           </span>
         </button>
 
-        {/* Desktop Nav links */}
-        <div className="hidden md:flex" style={{ alignItems: 'center', gap: '2rem' }}>
+        {/* Desktop Nav links - Absolute Centered */}
+        <div className="hidden md:flex" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', alignItems: 'center', gap: '2rem' }}>
           {navLinks.map((link) => (
             <button key={link.label} onClick={link.action}
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.88rem', fontWeight: 500, color: isDark ? '#9d8ec8' : '#6b6080', transition: 'color 0.2s', fontFamily: SANS }}
@@ -150,7 +150,7 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
               background: isDark ? colors.violet[600] : lightTheme.text, color: '#fff',
               border: 'none', cursor: 'pointer', transition: 'all 0.2s', fontFamily: SANS,
             }}>
-            Get Started
+            {t('get_started')}
           </button>
         </div>
 
@@ -212,7 +212,7 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
                   textTransform: 'uppercase', color: isDark ? '#5a4d7a' : '#9ca3af',
                   textAlign: 'center', marginBottom: '0.85rem', fontFamily: SANS,
                 }}>
-                  Output Language
+                  {t('output_lang')}
                 </p>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.6rem' }}>
                   {LANGUAGES.map((lang) => {
@@ -244,7 +244,7 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
               <div style={{ marginTop: 'auto', paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <button onClick={() => { setIsMobileMenuOpen(false); onStart(); }}
                   style={{ padding: '0.85rem', borderRadius: '10px', fontWeight: 600, fontSize: '1rem', background: colors.violet[600], color: '#fff', border: 'none', cursor: 'pointer', fontFamily: SANS }}>
-                  Get Started
+                  {t('get_started')}
                 </button>
                 <button onClick={toggleDark}
                   style={{
@@ -254,7 +254,7 @@ export default function Navbar({ onStart, onTeam, scrollToHow, onLogoClick }) {
                     color: isDark ? colors.violet[400] : '#6b6080', border: 'none', cursor: 'pointer', fontFamily: SANS,
                   }}>
                   {isDark ? <SunMedium size={18} /> : <Moon size={18} />}
-                  {isDark ? 'Light Mode' : 'Dark Mode'}
+                  {isDark ? t('light_mode') : t('dark_mode')}
                 </button>
               </div>
             </motion.div>

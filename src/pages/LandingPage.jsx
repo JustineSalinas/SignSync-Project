@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Play, Check, Camera, Hand, Volume2, Shield, Lock, Zap, MapPin, X, VideoOff } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 import { SERIF, SANS, darkTheme, lightTheme } from '../theme';
 
 import Navbar from '../components/Navbar';
@@ -13,6 +14,7 @@ import StepCard from '../components/StepCard';
 
 export default function LandingPage({ onStart, onTeam }) {
   const { isDark } = useTheme();
+  const { t } = useLanguage();
   const howItWorksRef = useRef(null);
   const [showVideo, setShowVideo] = useState(false);
   const [showCameraConfirm, setShowCameraConfirm] = useState(false);
@@ -91,7 +93,7 @@ export default function LandingPage({ onStart, onTeam }) {
           }}
         >
           <span style={{ fontSize: '0.6rem' }}>✦</span>
-          AI-Powered Sign Language
+          {t('hero_badge')}
         </motion.div>
 
         <motion.h1
@@ -110,10 +112,10 @@ export default function LandingPage({ onStart, onTeam }) {
             paddingTop: '1.5rem',
           }}
         >
-          Bridging the
+          {t('hero_title_1')}
           <br />
-          <GradientText text="gap" animate={true} />
-          {' in communication'}
+          <GradientText text={t('hero_title_2')} animate={true} />
+          {t('hero_title_3')}
         </motion.h1>
 
         <motion.p
@@ -129,8 +131,7 @@ export default function LandingPage({ onStart, onTeam }) {
             marginBottom: '2.5rem',
           }}
         >
-          Real-time sign language translation that lets you speak fluently without words — designed
-          for service counters, hospitals, and everyday life.
+          {t('hero_subtitle')}
         </motion.p>
 
         <motion.div
@@ -163,7 +164,7 @@ export default function LandingPage({ onStart, onTeam }) {
               fontFamily: SANS,
             }}
           >
-            Get Started
+            {t('get_started')}
             <ArrowRight size={18} strokeWidth={2.5} />
           </motion.button>
 
@@ -191,7 +192,7 @@ export default function LandingPage({ onStart, onTeam }) {
             }}
           >
             <Play size={15} strokeWidth={2.5} fill="currentColor" />
-            See a demo
+            {t('see_demo')}
           </motion.button>
         </motion.div>
 
@@ -201,7 +202,7 @@ export default function LandingPage({ onStart, onTeam }) {
           transition={{ delay: 0.6 }}
           style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '3rem', flexWrap: 'wrap', justifyContent: 'center' }}
         >
-          {['No video stored', 'Works offline', 'ADA compliant', 'All data stays on device'].map((text, i) => (
+          {[t('feature_1'), t('feature_2'), t('feature_3'), t('feature_4')].map((text, i) => (
             <span key={text} style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
               {i > 0 && <span style={{ width: 1, height: 16, background: isDark ? 'rgba(139,92,246,0.2)' : 'rgba(0,0,0,0.12)', margin: '0 0.75rem' }} />}
               <Check size={14} strokeWidth={2.5} style={{ color: isDark ? '#34d399' : '#22c55e', marginRight: '0.35rem' }} />
@@ -225,16 +226,16 @@ export default function LandingPage({ onStart, onTeam }) {
         }}
       >
         {[
-          { num: 97, pref: '', suff: '%', text: 'Gesture accuracy', color: '#7c3aed' },
-          { num: 80, pref: '<', suff: 'ms', text: 'Translation latency', color: '#10b981' },
-          { num: 500, pref: '', suff: '+', text: 'Signs recognized', color: '#f59e0b' },
-          { num: 0, pref: '', suff: 'kb', text: 'Data sent to servers', color: '#f472b6' },
+          { num: 97, pref: '', suff: '%', text: t('stat_1'), color: '#7c3aed' },
+          { num: 80, pref: '<', suff: 'ms', text: t('stat_2'), color: '#10b981' },
+          { num: 500, pref: '', suff: '+', text: t('stat_3'), color: '#f59e0b' },
+          { num: 0, pref: '', suff: 'kb', text: t('stat_4'), color: '#f472b6' },
         ].map((stat, i) => (
-          <div key={stat.text} style={{ padding: '3rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRight: i < 3 ? `1px solid ${isDark ? darkTheme.border : lightTheme.border}` : 'none' }}>
+          <div key={stat.text} style={{ padding: '3rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justify-center: 'center', borderRight: i < 3 ? `1px solid ${isDark ? darkTheme.border : lightTheme.border}` : 'none' }}>
             <span style={{ fontFamily: SERIF, fontSize: '2.5rem', fontWeight: 400, color: stat.color, lineHeight: 1, marginBottom: '0.5rem' }}>
               <CountingNumber value={stat.num} suffix={stat.suff} prefix={stat.pref} />
             </span>
-            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: isDark ? '#7a7088' : '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{stat.text}</span>
+            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: isDark ? '#7a7088' : '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'center' }}>{stat.text}</span>
           </div>
         ))}
       </section>
@@ -249,22 +250,22 @@ export default function LandingPage({ onStart, onTeam }) {
           <div style={{ maxWidth: 450 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
               <div style={{ height: 1, width: 30, background: '#7c3aed' }} />
-              <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7c3aed' }}>How It Works</span>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7c3aed' }}>{t('how_label')}</span>
             </div>
             {/* Semantic change from h2 to h2 */}
             <h2 style={{ fontFamily: SERIF, fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 400, lineHeight: 1.1, color: isDark ? darkTheme.text : lightTheme.text, margin: 0 }}>
-              Three steps to seamless understanding
+              {t('how_title')}
             </h2>
           </div>
           <p style={{ maxWidth: 350, fontSize: '0.9rem', lineHeight: 1.6, color: isDark ? darkTheme.textMuted : lightTheme.textMuted, margin: 0 }}>
-            Everything runs locally on your device. No account required. No data leaves the room.
+            {t('how_sub')}
           </p>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', maxWidth: 900, width: '100%' }}>
-          <StepCard step="01" icon={<Camera size={20} />} title="Camera Access" desc="We need your camera to see hand signs. No video is ever stored or transmitted — everything is processed locally, in real time." badgeText="ON-DEVICE ONLY" badgeIcon={<Lock size={12} />} badgeColor="#10b981" />
-          <StepCard step="02" icon={<Hand size={20} />} title="Position Your Hands" desc="Stand about 2 feet from the screen. Keep hands at chest height for the most accurate gesture recognition." badgeText="AI-POWERED DETECTION" badgeIcon={<Zap size={12} />} badgeColor="#7c3aed" />
-          <StepCard step="03" icon={<Volume2 size={20} />} title="Audio Translation" desc="Recognized signs are spoken aloud so the service officer can understand you — naturally, instantly, and without any extra steps." badgeText="UNDER 80MS LATENCY" badgeIcon={<Zap size={12} />} badgeColor="#f59e0b" />
+          <StepCard step="01" icon={<Camera size={20} />} title={t('step_1_title')} desc={t('step_1_desc')} badgeText={t('step_1_badge')} badgeIcon={<Lock size={12} />} badgeColor="#10b981" />
+          <StepCard step="02" icon={<Hand size={20} />} title={t('step_2_title')} desc={t('step_2_desc')} badgeText={t('step_2_badge')} badgeIcon={<Zap size={12} />} badgeColor="#7c3aed" />
+          <StepCard step="03" icon={<Volume2 size={20} />} title={t('step_3_title')} desc={t('step_3_desc')} badgeText={t('step_3_badge')} badgeIcon={<Zap size={12} />} badgeColor="#f59e0b" />
         </div>
       </section>
 
@@ -274,17 +275,17 @@ export default function LandingPage({ onStart, onTeam }) {
           <div style={{ maxWidth: 450 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
               <div style={{ height: 1, width: 30, background: '#7c3aed' }} />
-              <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7c3aed' }}>GET STARTED TODAY</span>
+              <span style={{ fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#7c3aed' }}>{t('cta_label')}</span>
             </div>
-            <h3 style={{ fontFamily: SERIF, fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontWeight: 400, lineHeight: 1.1, color: isDark ? darkTheme.text : lightTheme.text, marginBottom: '1.25rem' }}>Ready to communicate without barriers?</h3>
-            <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: isDark ? darkTheme.textMuted : lightTheme.textMuted, margin: 0 }}>Join clinics, banks, and service counters already using SignSync. No installation, no login, no friction.</p>
+            <h3 style={{ fontFamily: SERIF, fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontWeight: 400, lineHeight: 1.1, color: isDark ? darkTheme.text : lightTheme.text, marginBottom: '1.25rem' }}>{t('cta_title')}</h3>
+            <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: isDark ? darkTheme.textMuted : lightTheme.textMuted, margin: 0 }}>{t('cta_desc')}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: 160 }}>
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} onClick={handleGetStarted} tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && handleGetStarted()} style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', gap: '0.65rem', padding: '0.85rem 2rem', borderRadius: '999px', fontWeight: 600, fontSize: '0.95rem', background: 'linear-gradient(135deg, #d946ef, #7c3aed)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: SANS }}>
-              Get Started <ArrowRight size={18} strokeWidth={2.5} />
+              {t('get_started')} <ArrowRight size={18} strokeWidth={2.5} />
             </motion.button>
             <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} onClick={onTeam} tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onTeam()} style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', padding: '0.85rem 1.5rem', borderRadius: '999px', fontWeight: 600, fontSize: '0.95rem', background: 'transparent', color: isDark ? '#9d8ec8' : '#6b7280', border: `1px solid ${isDark ? 'rgba(139,92,246,0.2)' : 'rgba(0,0,0,0.1)'}`, cursor: 'pointer', fontFamily: SANS }}>
-              Learn more
+              {t('learn_more')}
             </motion.button>
           </div>
         </div>
@@ -299,7 +300,7 @@ export default function LandingPage({ onStart, onTeam }) {
               <span style={{ fontWeight: 700, fontSize: '1rem', color: isDark ? darkTheme.text : lightTheme.text }}>SignSync</span>
             </div>
             <p style={{ fontSize: '0.8rem', lineHeight: 1.6, color: isDark ? darkTheme.textMuted : '#6b7280' }}>
-              Building accessible technology for the Deaf community and service industries worldwide — one sign at a time.
+              {t('footer_desc')}
             </p>
           </div>
 
@@ -317,8 +318,8 @@ export default function LandingPage({ onStart, onTeam }) {
           </div>
         </div>
         <div style={{ maxWidth: 1000, margin: '0 auto', paddingTop: '2rem', borderTop: `1px solid ${isDark ? darkTheme.border : lightTheme.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <p style={{ fontSize: '0.75rem', color: isDark ? '#5a4d7a' : '#9ca3af', margin: 0 }}>© 2026 SignSync, Philippines. All rights reserved.</p>
-          <p style={{ fontSize: '0.75rem', color: isDark ? darkTheme.textMuted : '#6b7280', display: 'flex', alignItems: 'center', gap: '0.4rem', margin: 0 }}><Shield size={14} style={{ color: '#10b981' }} />Camera access is required. No data leaves this device.</p>
+          <p style={{ fontSize: '0.75rem', color: isDark ? '#5a4d7a' : '#9ca3af', margin: 0 }}>{t('footer_rights')}</p>
+          <p style={{ fontSize: '0.75rem', color: isDark ? darkTheme.textMuted : '#6b7280', display: 'flex', alignItems: 'center', gap: '0.4rem', margin: 0 }}><Shield size={14} style={{ color: '#10b981' }} />{t('footer_privacy')}</p>
         </div>
       </footer>
 
@@ -426,7 +427,7 @@ export default function LandingPage({ onStart, onTeam }) {
                   lineHeight: 1.25,
                 }}
               >
-                Enable Camera Access
+                {t('cam_title')}
               </h2>
 
               {/* Description */}
@@ -439,16 +440,17 @@ export default function LandingPage({ onStart, onTeam }) {
                 maxWidth: 340,
                 margin: '0 auto 1.75rem',
               }}>
-                SignSync uses your camera to detect hand signs in real time.{' '}
-                <strong style={{ color: isDark ? '#a78bfa' : '#7c3aed', fontWeight: 600 }}>No video is ever recorded or transmitted</strong> — all processing happens locally on this device.
+                {t('cam_desc_1')}
+                <strong style={{ color: isDark ? '#a78bfa' : '#7c3aed', fontWeight: 600 }}>{t('cam_desc_bold')}</strong>
+                {t('cam_desc_2')}
               </p>
 
               {/* Privacy pills */}
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '1.75rem' }}>
                 {[
-                  { icon: <Shield size={12} />, text: 'On-device only', color: '#10b981' },
-                  { icon: <VideoOff size={12} />, text: 'No recording', color: '#f472b6' },
-                  { icon: <Lock size={12} />, text: 'Zero data sent', color: '#f59e0b' },
+                  { icon: <Shield size={12} />, text: t('cam_p1'), color: '#10b981' },
+                  { icon: <VideoOff size={12} />, text: t('cam_p2'), color: '#f472b6' },
+                  { icon: <Lock size={12} />, text: t('cam_p3'), color: '#f59e0b' },
                 ].map(({ icon, text, color }) => (
                   <span key={text} style={{
                     display: 'inline-flex',
@@ -494,7 +496,7 @@ export default function LandingPage({ onStart, onTeam }) {
                   }}
                 >
                   <Camera size={17} strokeWidth={2.5} />
-                  Allow Camera &amp; Continue
+                  {t('cam_btn_allow')}
                 </motion.button>
 
                 <motion.button
@@ -519,7 +521,7 @@ export default function LandingPage({ onStart, onTeam }) {
                     transition: 'color 0.2s',
                   }}
                 >
-                  Not now
+                  {t('cam_btn_cancel')}
                 </motion.button>
               </div>
             </motion.div>
